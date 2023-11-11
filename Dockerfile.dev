@@ -7,6 +7,4 @@ COPY Gemfile* ./
 RUN apk update && apk add --no-cache build-base ruby-dev postgresql-dev
 RUN bundle install
 
-EXPOSE 2300
-
 COPY . .

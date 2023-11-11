@@ -14,9 +14,6 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     stdin_open: true
-    command: sh -c "hanami server"
-    ports:
-      - "2300:2300"
     depends_on:
       - db
     volumes:
