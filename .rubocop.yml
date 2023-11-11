@@ -1,0 +1,33 @@
+require:
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+
+# Styles
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Exclude:
+    - spec/support/rspec.rb
+
+# Tests
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - spec/requests/root_spec.rb
+
+RSpec/ContextWording:
+  Exclude:
+    - spec/support/requests.rb
+
+RSpec/Rails/InferredSpecType:
+  Enabled: false

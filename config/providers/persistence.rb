@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Hanami.app.register_provider :persistence, namespace: true do
   prepare do
     require "rom"

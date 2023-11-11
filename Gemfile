@@ -3,13 +3,13 @@
 source "https://rubygems.org"
 
 gem "hanami", "~> 2.0"
-gem "hanami-router", "~> 2.0"
 gem "hanami-controller", "~> 2.0"
+gem "hanami-router", "~> 2.0"
 gem "hanami-validations", "~> 2.0"
 
+gem "pg", "~> 1.5"
 gem "rom", "~> 5.3"
 gem "rom-sql", "~> 3.6"
-gem "pg", "~> 1.5"
 
 gem "dry-types", "~> 1.0", ">= 1.6.1"
 gem "puma"
@@ -25,6 +25,9 @@ end
 
 group :cli, :development, :test do
   gem "hanami-rspec"
+  gem "rubocop", "~> 1.57", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-rspec", require: false
 end
 
 group :development do
