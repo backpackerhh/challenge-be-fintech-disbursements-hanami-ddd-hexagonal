@@ -1,0 +1,12 @@
+FROM ruby:3.2.2-alpine
+
+WORKDIR /usr/app
+
+COPY Gemfile* ./
+
+RUN apk update && apk add --no-cache build-base ruby-dev
+RUN bundle install
+
+EXPOSE 2300
+
+COPY . .
