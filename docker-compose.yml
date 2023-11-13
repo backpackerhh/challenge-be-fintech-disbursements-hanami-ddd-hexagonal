@@ -6,7 +6,8 @@ services:
     restart: always
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    env_file: .env
+    env_file:
+      - .env.${ENV:-development}
 
   app:
     image: challenge-be-fintech-disbursements
@@ -18,7 +19,6 @@ services:
       - db
     volumes:
       - .:/usr/app
-    env_file: .env
 
 volumes:
   postgres-data:
