@@ -4,6 +4,9 @@ require "database_cleaner-sequel"
 
 Hanami.app.prepare(:persistence)
 DatabaseCleaner[:sequel, db: Hanami.app["persistence.db"]]
+DatabaseCleaner.url_allowlist = [
+  %r{^postgres://*}
+]
 
 RSpec.configure do |config|
   config.before(:suite) do
