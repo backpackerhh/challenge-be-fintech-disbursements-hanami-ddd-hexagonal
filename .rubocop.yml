@@ -16,8 +16,22 @@ Style/Documentation:
   Enabled: false
 
 Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: true
   Exclude:
-    - spec/support/rspec.rb
+    - 'lib/fintech/shared/domain/*_value_object.rb'
+
+# Metrics
+
+Metrics/ParameterLists:
+  Enabled: true
+  Exclude:
+    - 'lib/fintech/**/domain/*_entity.rb'
 
 # Tests
 

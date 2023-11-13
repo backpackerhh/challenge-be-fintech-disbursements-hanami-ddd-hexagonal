@@ -12,11 +12,7 @@ Hanami.app.register_provider :persistence, namespace: true do
 
   start do
     config = target["persistence.config"]
-
-    config.auto_registration(
-      target.root.join("lib/fintech/persistence"),
-      namespace: "Fintech::Persistence"
-    )
+    config.register_relation(Fintech::Merchants::Infrastructure::MerchantsRelation)
 
     register "rom", ROM.container(config)
   end
