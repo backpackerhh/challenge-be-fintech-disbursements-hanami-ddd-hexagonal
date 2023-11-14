@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "hanami/rake_tasks"
 require "rom/sql/rake_task"
+require "hanami/rake_tasks"
 
 task :environment do
   require_relative "config/app"
