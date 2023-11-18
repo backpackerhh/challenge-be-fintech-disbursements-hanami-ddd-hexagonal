@@ -18,6 +18,7 @@ gem "rake"
 group :development, :test do
   gem "debug"
   gem "dotenv"
+  gem "rom-factory", "~> 0.10"
 end
 
 group :cli, :development do
