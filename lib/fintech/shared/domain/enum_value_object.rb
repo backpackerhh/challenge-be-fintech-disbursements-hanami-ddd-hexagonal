@@ -4,19 +4,18 @@ module Fintech
   module Shared
     module Domain
       class EnumValueObject < ValueObject
-        def initialize(new_value)
-          super(new_value)
+        def self.allowed_values(values)
+          const_set(:ALLOWED_VALUES, values.freeze)
 
-          if !valid?
-            raise InvalidArgumentError,
-                  "'#{value}' is not valid. Allowed values are: #{self.class::ALLOWED_VALUES.join(', ')}"
-          end
+          value_type Types::Strict::String.enum(*const_get(:ALLOWED_VALUES))
         end
 
-        private
+        def initialize(*)
+          if !self.class.const_defined?(:ALLOWED_VALUES)
+            raise NotImplementedError, "Define allowed values for the enum type with .allowed_values class method"
+          end
 
-        def valid?
-          self.class::ALLOWED_VALUES.include?(value)
+          super
         end
       end
     end

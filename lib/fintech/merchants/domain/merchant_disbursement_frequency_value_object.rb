@@ -6,7 +6,8 @@ module Fintech
       class MerchantDisbursementFrequencyValueObject < Shared::Domain::EnumValueObject
         DAILY = "DAILY"
         WEEKLY = "WEEKLY"
-        ALLOWED_VALUES = [DAILY, WEEKLY].freeze
+
+        allowed_values [DAILY, WEEKLY]
       end
     end
   end

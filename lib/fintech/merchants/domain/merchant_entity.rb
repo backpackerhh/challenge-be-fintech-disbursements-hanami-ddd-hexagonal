@@ -23,13 +23,13 @@ module Fintech
                        live_on:,
                        minimum_monthly_fee:,
                        created_at: Time.now)
-          @id = MerchantIdValueObject.new(id)
-          @email = MerchantEmailValueObject.new(email)
-          @reference = MerchantReferenceValueObject.new(reference)
-          @disbursement_frequency = MerchantDisbursementFrequencyValueObject.new(disbursement_frequency)
-          @live_on = MerchantLiveOnValueObject.new(live_on)
-          @minimum_monthly_fee = MerchantMinimumMonthlyFeeValueObject.new(minimum_monthly_fee)
-          @created_at = MerchantCreatedAtValueObject.new(created_at)
+          @id = MerchantIdValueObject.new(value: id)
+          @email = MerchantEmailValueObject.new(value: email)
+          @reference = MerchantReferenceValueObject.new(value: reference)
+          @disbursement_frequency = MerchantDisbursementFrequencyValueObject.new(value: disbursement_frequency)
+          @live_on = MerchantLiveOnValueObject.new(value: live_on)
+          @minimum_monthly_fee = MerchantMinimumMonthlyFeeValueObject.new(value: minimum_monthly_fee)
+          @created_at = MerchantCreatedAtValueObject.new(value: created_at)
         end
 
         def to_primitives

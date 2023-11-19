@@ -4,19 +4,7 @@ module Fintech
   module Shared
     module Domain
       class EmailValueObject < ValueObject
-        def initialize(new_value)
-          super(new_value)
-
-          if !valid?
-            raise InvalidArgumentError, "'#{value}' is not a valid email"
-          end
-        end
-
-        private
-
-        def valid?
-          URI::MailTo::EMAIL_REGEXP.match?(value)
-        end
+        value_type Types::Strict::String.constrained(format: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i)
       end
     end
   end
