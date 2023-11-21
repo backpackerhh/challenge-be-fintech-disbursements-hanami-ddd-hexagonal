@@ -5,7 +5,7 @@ require "rom-sql"
 module Fintech
   module Merchants
     module Infrastructure
-      class PostgresMerchantRepository < Domain::MerchantRepository
+      class PostgresMerchantRepository
         include Deps["persistence.rom", "logger"]
 
         def all

@@ -24,6 +24,7 @@ Style/NegatedIf:
 Style/GuardClause:
   Enabled: true
   Exclude:
+    - 'lib/fintech/shared/application/use_case.rb'
     - 'lib/fintech/shared/domain/*value_object.rb'
 
 # Metrics

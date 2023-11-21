@@ -3,18 +3,8 @@
 module Fintech
   module Merchants
     module Domain
-      class MerchantRepository
-        def all
-          raise NotImplementedError
-        end
-
-        def create(attributes)
-          raise NotImplementedError
-        end
-
-        def bulk_create(attributes)
-          raise NotImplementedError
-        end
+      module MerchantRepository
+        Interface = Dry.Types.Interface(:all, :create, :bulk_create)
       end
     end
   end
