@@ -3,7 +3,7 @@
 module Fintech
   module Merchants
     module Domain
-      class MerchantMinimumMonthlyFeeValueObject < Shared::Domain::PercentageValueObject
+      class MerchantMinimumMonthlyFeeValueObject < Shared::Domain::DecimalValueObject
       end
     end
   end
