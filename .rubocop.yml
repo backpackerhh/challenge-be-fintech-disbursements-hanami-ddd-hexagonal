@@ -40,9 +40,14 @@ RSpec/MultipleExpectations:
   Exclude:
     - spec/requests/root_spec.rb
 
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - spec/support/shared_contexts/rake.rb
+
 RSpec/ContextWording:
   Exclude:
     - spec/support/requests.rb
+    - spec/support/shared_contexts/rake.rb
 
 RSpec/Rails/InferredSpecType:
   Enabled: false

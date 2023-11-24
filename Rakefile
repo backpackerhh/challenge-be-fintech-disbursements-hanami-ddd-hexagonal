@@ -3,6 +3,8 @@
 require "rom/sql/rake_task"
 require "hanami/rake_tasks"
 
+Rake.add_rakelib "lib/tasks/**"
+
 task :environment do
   require_relative "config/app"
   require "hanami/prepare"
