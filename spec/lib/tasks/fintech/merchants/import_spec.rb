@@ -21,7 +21,7 @@ RSpec.describe "fintech:merchants:import", type: :task do
     expect { task.invoke("spec/support/data/merchants.xls") }.to output(/Supported files.+Example usage/m).to_stdout
   end
 
-  it "imports merchants from given file" do
+  it "imports merchants from given file", :sidekiq_inline do
     merchants = Fintech::Container["merchants.repository"].all
 
     expect(merchants.map(&:id)).to eq([])
