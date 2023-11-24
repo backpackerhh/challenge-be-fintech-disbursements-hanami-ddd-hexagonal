@@ -39,6 +39,6 @@ group :development do
 end
 
 group :test do
-  gem "database_cleaner-sequel"
-  gem "rack-test"
+  gem "database_cleaner-sequel", "~> 2.0", ">= 2.0.2"
+  gem "rack-test", "~> 2.1"
 end

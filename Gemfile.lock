@@ -272,7 +272,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  database_cleaner-sequel
+  database_cleaner-sequel (~> 2.0, >= 2.0.2)
   debug
   dotenv
   dry-types (~> 1.0, >= 1.6.1)
@@ -285,7 +285,7 @@ DEPENDENCIES
   hanami-validations (~> 2.0)
   pg (~> 1.5)
   puma (~> 6.4)
-  rack-test
+  rack-test (~> 2.1)
   rake (~> 13.1)
   redis (~> 5.0, >= 5.0.8)
   rom (~> 5.3)

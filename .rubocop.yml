@@ -37,17 +37,30 @@ Metrics/ParameterLists:
 # Tests
 
 RSpec/MultipleExpectations:
+  Enabled: true
   Exclude:
     - spec/requests/root_spec.rb
+    - spec/lib/tasks/fintech/merchants/import_spec.rb
 
 RSpec/MultipleMemoizedHelpers:
+  Enabled: true
   Exclude:
     - spec/support/shared_contexts/rake.rb
 
+RSpec/ExampleLength:
+  Enabled: true
+  Exclude:
+    - spec/lib/tasks/fintech/merchants/import_spec.rb
+
 RSpec/ContextWording:
+  Enabled: true
   Exclude:
     - spec/support/requests.rb
     - spec/support/shared_contexts/rake.rb
 
 RSpec/Rails/InferredSpecType:
   Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: true
+  EnforcedStyle: receive

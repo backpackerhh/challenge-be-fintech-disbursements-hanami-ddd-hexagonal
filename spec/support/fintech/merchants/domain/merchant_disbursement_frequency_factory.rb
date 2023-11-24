@@ -7,6 +7,14 @@ module Fintech
         def self.build(value = MerchantDisbursementFrequencyValueObject::ALLOWED_VALUES.sample)
           value
         end
+
+        def self.daily
+          MerchantDisbursementFrequencyValueObject::DAILY
+        end
+
+        def self.weekly
+          MerchantDisbursementFrequencyValueObject::WEEKLY
+        end
       end
     end
   end
