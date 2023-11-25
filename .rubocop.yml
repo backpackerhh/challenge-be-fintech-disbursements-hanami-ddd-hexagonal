@@ -49,8 +49,8 @@ RSpec/MultipleMemoizedHelpers:
 
 RSpec/ExampleLength:
   Enabled: true
-  Exclude:
-    - spec/lib/tasks/fintech/merchants/import_spec.rb
+  CountAsOne: ["array", "method_call", "heredoc"]
+  Max: 10
 
 RSpec/ContextWording:
   Enabled: true
