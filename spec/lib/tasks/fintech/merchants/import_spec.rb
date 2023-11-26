@@ -30,7 +30,7 @@ RSpec.describe "fintech:merchants:import", type: %i[task database] do
 
     merchants = Fintech::Container["merchants.repository"].all
 
-    expect(merchants.map(&:id)).to match_array(
+    expect(merchants.map { |m| m.id.value }).to match_array(
       %w[
         86312006-4d7e-45c4-9c28-788f4aa68a62
         d1649242-a612-46ba-82d8-225542bb9576
