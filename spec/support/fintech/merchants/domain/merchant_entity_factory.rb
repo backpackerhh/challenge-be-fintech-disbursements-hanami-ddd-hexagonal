@@ -17,13 +17,13 @@ module Fintech
         def self.build(attributes = {})
           merchant = Factory.structs[:merchant, **attributes]
 
-          MerchantEntity.from_primitives(merchant)
+          MerchantEntity.from_primitives(merchant.to_h)
         end
 
         def self.create(attributes = {})
           merchant = Factory[:merchant, **attributes]
 
-          MerchantEntity.from_primitives(merchant)
+          MerchantEntity.from_primitives(merchant.to_h)
         end
       end
     end

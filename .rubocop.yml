@@ -71,3 +71,8 @@ RSpec/MessageSpies:
 RSpec/ReturnFromStub:
   Enabled: true
   EnforcedStyle: block
+
+RSpec/DescribeClass:
+  Enabled: true
+  Exclude:
+    - spec/lib/tasks/**/*

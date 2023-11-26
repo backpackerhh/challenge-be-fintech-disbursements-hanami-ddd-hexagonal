@@ -7,8 +7,6 @@ module Fintech
         def all; end
 
         def create(attributes); end
-
-        def bulk_create(attributes); end
       end
     end
   end

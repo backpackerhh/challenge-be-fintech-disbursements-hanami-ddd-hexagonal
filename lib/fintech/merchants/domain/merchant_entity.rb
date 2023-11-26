@@ -43,6 +43,10 @@ module Fintech
             created_at: created_at.value
           }
         end
+
+        def ==(other)
+          to_primitives == other.to_primitives
+        end
       end
     end
   end

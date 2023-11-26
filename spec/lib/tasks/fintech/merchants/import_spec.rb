@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "fintech:merchants:import", type: :task do
+RSpec.describe "fintech:merchants:import", type: %i[task database] do
   include_context "rake"
 
   it "preloads the environment" do
