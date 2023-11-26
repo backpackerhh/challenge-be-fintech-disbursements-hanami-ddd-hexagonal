@@ -13,7 +13,7 @@ module Fintech
               disbursement_frequency: attributes.fetch(:disbursement_frequency),
               live_on: attributes.fetch(:live_on),
               minimum_monthly_fee: attributes.fetch(:minimum_monthly_fee),
-              created_at: attributes.fetch(:created_at))
+              created_at: attributes.fetch(:created_at, Time.now))
         end
 
         def initialize(id:,

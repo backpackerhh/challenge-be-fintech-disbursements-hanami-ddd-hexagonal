@@ -4,7 +4,7 @@ module Fintech
   module Shared
     module Domain
       class DateValueObject < ValueObject
-        value_type Types::Date
+        value_type Types::Params::Date
       end
     end
   end

@@ -12,3 +12,5 @@ require_relative "support/database_cleaner"
 require_relative "support/factory"
 require_relative "support/sidekiq"
 require_relative "support/shared_contexts/rake"
+
+Dir["#{__dir__}/support/fintech/**/*.rb"].each { |file| require file }

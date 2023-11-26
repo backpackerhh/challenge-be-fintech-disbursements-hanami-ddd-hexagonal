@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 module Fintech
   module Merchants
     module Infrastructure
@@ -7,7 +9,15 @@ module Fintech
         sidekiq_options queue: "import_data", unique: true, retry_for: 3600 # 1 hour
 
         def perform(file_path)
-          # TODO
+          raw_merchants = CSV.read(file_path, headers: true, col_sep: ";")
+
+          raw_merchants.each_with_index do |raw_merchant, idx|
+            delay = idx * 2 # in seconds
+
+            CreateMerchantJob.perform_in(Time.now + delay, raw_merchant.to_h)
+
+            logger.info("Job enqueued for creating merchant #{raw_merchant['id']}")
+          end
         end
       end
     end
