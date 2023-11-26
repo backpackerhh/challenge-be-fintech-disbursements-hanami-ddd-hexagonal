@@ -13,12 +13,12 @@ RSpec.describe "fintech:merchants:import", type: %i[task database] do
     expect { task.invoke }.to output(/No file path given.+Example usage/m).to_stdout
   end
 
-  it "aborts execution when given file does not exist" do
-    expect { task.invoke("spec/support/data/fake") }.to output(/not found.+Example usage/m).to_stdout
-  end
-
   it "aborts execution when given file is not supported" do
     expect { task.invoke("spec/support/data/merchants.xls") }.to output(/Supported files.+Example usage/m).to_stdout
+  end
+
+  it "aborts execution when given file does not exist" do
+    expect { task.invoke("spec/support/data/fake.csv") }.to output(/not found.+Example usage/m).to_stdout
   end
 
   it "imports merchants from given file", :sidekiq_inline do

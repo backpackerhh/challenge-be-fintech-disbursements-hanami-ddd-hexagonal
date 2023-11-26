@@ -24,15 +24,20 @@ Style/NegatedIf:
 Style/GuardClause:
   Enabled: true
   Exclude:
-    - 'lib/fintech/shared/application/use_case.rb'
-    - 'lib/fintech/shared/domain/*value_object.rb'
+    - lib/fintech/shared/application/use_case.rb
+    - lib/fintech/shared/domain/*value_object.rb
 
 # Metrics
 
 Metrics/ParameterLists:
   Enabled: true
   Exclude:
-    - 'lib/fintech/**/domain/*_entity.rb'
+    - lib/fintech/**/domain/*_entity.rb
+
+Metrics/MethodLength:
+  Enabled: true
+  Exclude:
+    - lib/tasks/fintech/task_helpers.rb
 
 # Tests
 
