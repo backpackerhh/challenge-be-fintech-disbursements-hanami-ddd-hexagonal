@@ -15,12 +15,16 @@ module Fintech
           raise InvalidRepositoryImplementationError, e
         end
 
-        def self.repository(interface_type, dependency_key:)
-          attribute :repository, interface_type # order matters here
+        def self.repository(dependency_key, type:)
+          attribute :repository, type # order matters here
 
-          if dependency_key
-            include Deps[repository: dependency_key]
-          end
+          include Deps[repository: dependency_key]
+        end
+
+        def self.logger
+          attribute :logger, Types::Nominal::Any
+
+          include Deps["logger"]
         end
 
         def initialize(*)
