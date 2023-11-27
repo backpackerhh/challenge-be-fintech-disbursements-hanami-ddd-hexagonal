@@ -9,7 +9,7 @@ namespace :fintech do
       example_usage = "rake fintech:orders:import[<file_path>]"
 
       Fintech::TaskHelpers.handle_import_data_from_file(args.file_path, example_usage) do
-        # TODO
+        Fintech::Orders::Infrastructure::ImportOrdersJob.perform_async(args.file_path)
 
         Hanami.logger.info("Job enqueued to import orders from #{args.file_path}")
       end

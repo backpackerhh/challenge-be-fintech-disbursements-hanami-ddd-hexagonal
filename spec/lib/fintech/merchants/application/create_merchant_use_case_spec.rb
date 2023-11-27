@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "csv"
 
 RSpec.describe Fintech::Merchants::Application::CreateMerchantUseCase, type: :use_case do
   describe "#create(attributes)" do

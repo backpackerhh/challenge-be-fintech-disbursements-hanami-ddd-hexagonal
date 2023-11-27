@@ -18,7 +18,7 @@ module Fintech
 
             logger.info("Job enqueued for creating merchant #{raw_merchant['id']}")
           end
-        rescue StandardError => e # due to great variety of exceptions that could be raised
+        rescue StandardError => e # rescue generic exception due to great variety of exceptions that could be raised
           logger.error("Found error processing given file (#{file_path}): #{e.message}")
         end
       end
