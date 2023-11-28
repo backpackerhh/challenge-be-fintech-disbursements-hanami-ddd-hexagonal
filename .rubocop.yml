@@ -38,6 +38,13 @@ Metrics/MethodLength:
   Enabled: true
   Exclude:
     - lib/tasks/fintech/task_helpers.rb
+    - lib/fintech/orders/infrastructure/import_orders_job.rb
+
+Metrics/AbcSize:
+  Enabled: true
+  CountRepeatedAttributes: false
+  Exclude:
+    - lib/fintech/orders/infrastructure/import_orders_job.rb
 
 # Tests
 
@@ -78,3 +85,8 @@ RSpec/DescribeClass:
   Enabled: true
   Exclude:
     - spec/lib/tasks/**/*
+
+RSpec/MatchArray:
+  Enabled: true
+  Exclude:
+    - spec/lib/tasks/fintech/orders/import_spec.rb

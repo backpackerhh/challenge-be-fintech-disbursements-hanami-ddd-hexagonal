@@ -74,7 +74,7 @@ RSpec.describe Fintech::Merchants::Application::CreateMerchantUseCase, type: :us
 
         expect do
           use_case.create(attributes.merge("minimum_monthly_fee" => "free"))
-        end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+BigDecimal.+failed/)
+        end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+coerced to decimal.+failed/)
       end
 
       it "does not create merchant (invalid created at time)" do

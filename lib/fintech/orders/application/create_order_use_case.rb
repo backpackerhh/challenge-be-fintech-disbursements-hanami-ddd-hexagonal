@@ -12,7 +12,7 @@ module Fintech
 
           repository.create(order.to_primitives)
 
-          logger.info("Order successfully created!")
+          logger.info("Order successfully created")
         end
       end
     end

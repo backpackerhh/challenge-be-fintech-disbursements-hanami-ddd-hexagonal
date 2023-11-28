@@ -22,6 +22,10 @@ RSpec.describe "fintech:orders:import", type: %i[task database] do
   end
 
   it "imports orders from given file", :sidekiq_inline do
+    merchant_a = Fintech::Merchants::Domain::MerchantEntityFactory.create(reference: "padberg_group")
+    merchant_b = Fintech::Merchants::Domain::MerchantEntityFactory.create(reference: "deckow_gibson")
+    merchant_c = Fintech::Merchants::Domain::MerchantEntityFactory.create(reference: "romaguera_and_sons")
+
     orders = Fintech::Container["orders.repository"].all
 
     expect(orders.map(&:id)).to eq([])
@@ -30,14 +34,14 @@ RSpec.describe "fintech:orders:import", type: %i[task database] do
 
     orders = Fintech::Container["orders.repository"].all
 
-    expect(orders.map { |m| m.id.value }).to match_array(
-      %w[
-        0df9c70e-142f-4960-859f-30aa14f8e103
-        92baa6b6-08f7-4ab9-b662-9ab866fce3ec
-        1bc24c57-e778-4b7b-a636-5a34c4cebfb8
-        cf7407fc-09fd-47f6-ad66-35c858ae7a1d
-        aaf1108b-3aa9-4fe5-a05b-3c72ce8fcf59
-        107511ee-b588-461e-966c-342cbcc20088
+    expect(orders.map { |o| [o.merchant_id.value, o.amount.value] }).to match_array(
+      [
+        [merchant_a.id.value, BigDecimal("102.29")],
+        [merchant_a.id.value, BigDecimal("433.21")],
+        [merchant_b.id.value, BigDecimal("377.65")],
+        [merchant_b.id.value, BigDecimal("138.49")],
+        [merchant_b.id.value, BigDecimal("213.3")],
+        [merchant_c.id.value, BigDecimal("462.34")]
       ]
     )
   end

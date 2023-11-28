@@ -53,7 +53,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
 
         expect do
           use_case.create(attributes.merge("amount" => "free"))
-        end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+BigDecimal.+failed/)
+        end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+coerced to decimal.+failed/)
       end
 
       it "does not create order (invalid created at time)" do
