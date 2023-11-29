@@ -12,7 +12,7 @@ module Fintech
 
           repository.create(merchant.to_primitives)
 
-          logger.info("Merchant successfully created")
+          logger.info("Merchant #{merchant.id.value} successfully created")
         end
       end
     end

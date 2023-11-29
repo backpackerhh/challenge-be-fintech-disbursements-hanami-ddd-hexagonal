@@ -10,7 +10,7 @@ module Fintech
         def all
           merchants = repository.all
 
-          logger.info("Merchant successfully retrieved")
+          logger.info("Merchants successfully retrieved")
 
           merchants
         end
