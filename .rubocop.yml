@@ -27,6 +27,10 @@ Style/GuardClause:
     - lib/fintech/shared/application/use_case.rb
     - lib/fintech/shared/domain/*value_object.rb
 
+Style/ArgumentsForwarding:
+  Enabled: true
+  UseAnonymousForwarding: false
+
 # Metrics
 
 Metrics/ParameterLists:

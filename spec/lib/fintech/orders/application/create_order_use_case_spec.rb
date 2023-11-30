@@ -22,6 +22,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
           {
             id: "0df9c70e-142f-4960-859f-30aa14f8e103",
             merchant_id: "86312006-4d7e-45c4-9c28-788f4aa68a62",
+            disbursement_id: nil,
             amount: 102.29,
             created_at: Time.parse("2023-02-01")
           }

@@ -16,14 +16,14 @@ module Fintech
           f.created_at { Fintech::Disbursements::Domain::DisbursementCreatedAtFactory.build }
         end
 
-        def self.build(attributes = {})
-          disbursement = Factory.structs[:disbursement, **attributes]
+        def self.build(*traits, **attributes)
+          disbursement = Factory.structs[:disbursement, *traits, **attributes]
 
           DisbursementEntity.from_primitives(disbursement.to_h)
         end
 
-        def self.create(attributes = {})
-          disbursement = Factory[:disbursement, **attributes]
+        def self.create(*traits, **attributes)
+          disbursement = Factory[:disbursement, *traits, **attributes]
 
           DisbursementEntity.from_primitives(disbursement.to_h)
         end

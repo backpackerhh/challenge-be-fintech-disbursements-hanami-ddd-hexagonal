@@ -14,14 +14,14 @@ module Fintech
           f.created_at { Fintech::Merchants::Domain::MerchantCreatedAtFactory.build }
         end
 
-        def self.build(attributes = {})
-          merchant = Factory.structs[:merchant, **attributes]
+        def self.build(*traits, **attributes)
+          merchant = Factory.structs[:merchant, *traits, **attributes]
 
           MerchantEntity.from_primitives(merchant.to_h)
         end
 
-        def self.create(attributes = {})
-          merchant = Factory[:merchant, **attributes]
+        def self.create(*traits, **attributes)
+          merchant = Factory[:merchant, *traits, **attributes]
 
           MerchantEntity.from_primitives(merchant.to_h)
         end

@@ -88,7 +88,8 @@ CREATE TABLE public.orders (
     id uuid NOT NULL,
     amount numeric(10,2) NOT NULL,
     created_at timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
-    merchant_id uuid NOT NULL
+    merchant_id uuid NOT NULL,
+    disbursement_id uuid
 );
 
 
@@ -159,6 +160,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.disbursements
     ADD CONSTRAINT disbursements_merchant_id_fkey FOREIGN KEY (merchant_id) REFERENCES public.merchants(id);
+
+
+--
+-- Name: orders orders_disbursement_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_disbursement_id_fkey FOREIGN KEY (disbursement_id) REFERENCES public.disbursements(id);
 
 
 --
