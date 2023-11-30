@@ -54,7 +54,7 @@ Charging the `minimum_monthly_fee` is out of the scope of this challenge. It is 
 
 </div>
 
-You can find [merchants CSV here](merchants.csv).
+You can find [merchants CSV here](db/data/merchants.csv).
 
 ### Orders samples
 
@@ -73,7 +73,7 @@ You can find [merchants CSV here](merchants.csv).
 
 </div>
 
-You can find [orders CSV here](orders.csv).
+You can find [orders CSV here](db/data/orders.csv).
 
 We expect you to:
 
