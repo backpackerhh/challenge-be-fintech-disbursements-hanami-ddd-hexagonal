@@ -24,7 +24,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
@@ -45,6 +45,23 @@ ALTER TYPE public.merchant_disbursement_frequency_enum OWNER TO postgres;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: disbursements; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.disbursements (
+    id uuid NOT NULL,
+    reference character varying(12) NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    commissions_amount numeric(10,2) NOT NULL,
+    order_ids uuid[] NOT NULL,
+    created_at timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
+    merchant_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.disbursements OWNER TO postgres;
 
 --
 -- Name: merchants; Type: TABLE; Schema: public; Owner: postgres
@@ -89,6 +106,22 @@ CREATE TABLE public.schema_migrations (
 ALTER TABLE public.schema_migrations OWNER TO postgres;
 
 --
+-- Name: disbursements disbursements_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disbursements
+    ADD CONSTRAINT disbursements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: disbursements disbursements_reference_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disbursements
+    ADD CONSTRAINT disbursements_reference_key UNIQUE (reference);
+
+
+--
 -- Name: merchants merchants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -121,6 +154,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: disbursements disbursements_merchant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.disbursements
+    ADD CONSTRAINT disbursements_merchant_id_fkey FOREIGN KEY (merchant_id) REFERENCES public.merchants(id);
+
+
+--
 -- Name: orders orders_merchant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -131,4 +172,3 @@ ALTER TABLE ONLY public.orders
 --
 -- PostgreSQL database dump complete
 --
-

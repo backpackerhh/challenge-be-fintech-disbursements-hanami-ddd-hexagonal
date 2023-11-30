@@ -14,6 +14,7 @@ Hanami.app.register_provider :persistence, namespace: true do
     config = target["persistence.config"]
     config.register_relation(Fintech::Merchants::Infrastructure::MerchantsRelation)
     config.register_relation(Fintech::Orders::Infrastructure::OrdersRelation)
+    config.register_relation(Fintech::Disbursements::Infrastructure::DisbursementsRelation)
 
     register "rom", ROM.container(config)
   end
