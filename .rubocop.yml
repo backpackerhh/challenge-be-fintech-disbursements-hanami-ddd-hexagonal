@@ -44,6 +44,10 @@ Metrics/MethodLength:
     - lib/tasks/fintech/task_helpers.rb
     - lib/fintech/orders/infrastructure/import_orders_job.rb
 
+Metrics/BlockLength:
+  Enabled: true
+  CountAsOne: ["array", "hash", "method_call", "heredoc"]
+
 Metrics/AbcSize:
   Enabled: true
   CountRepeatedAttributes: false
@@ -65,7 +69,7 @@ RSpec/MultipleMemoizedHelpers:
 
 RSpec/ExampleLength:
   Enabled: true
-  CountAsOne: ["array", "method_call", "heredoc"]
+  CountAsOne: ["array", "hash", "method_call", "heredoc"]
   Max: 10
 
 RSpec/ContextWording:

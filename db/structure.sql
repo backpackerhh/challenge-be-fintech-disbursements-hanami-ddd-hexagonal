@@ -42,6 +42,29 @@ CREATE TYPE public.merchant_disbursement_frequency_enum AS ENUM (
 
 ALTER TYPE public.merchant_disbursement_frequency_enum OWNER TO postgres;
 
+--
+-- Name: update_disbursement_id(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.update_disbursement_id() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE public.orders
+    SET disbursement_id = NULL
+    WHERE id = ANY(OLD.order_ids);
+
+    UPDATE public.orders
+    SET disbursement_id = NEW.id
+    WHERE id = ANY(NEW.order_ids);
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.update_disbursement_id() OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -152,6 +175,13 @@ ALTER TABLE ONLY public.orders
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (filename);
+
+
+--
+-- Name: disbursements disbursement_update_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER disbursement_update_trigger AFTER INSERT OR UPDATE OF order_ids ON public.disbursements FOR EACH ROW EXECUTE FUNCTION public.update_disbursement_id();
 
 
 --
