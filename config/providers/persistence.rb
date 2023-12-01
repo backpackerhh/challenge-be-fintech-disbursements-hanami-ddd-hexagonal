@@ -12,10 +12,12 @@ Hanami.app.register_provider :persistence, namespace: true do
 
   start do
     config = target["persistence.config"]
-    config.register_relation(Fintech::Merchants::Infrastructure::MerchantsRelation)
-    config.register_relation(Fintech::Orders::Infrastructure::OrdersRelation)
-    config.register_relation(Fintech::Disbursements::Infrastructure::DisbursementsRelation)
-    config.register_relation(Fintech::OrderCommissions::Infrastructure::OrderCommissionsRelation)
+    config.register_relation(
+      Fintech::Merchants::Infrastructure::MerchantsRelation,
+      Fintech::Orders::Infrastructure::OrdersRelation,
+      Fintech::Disbursements::Infrastructure::DisbursementsRelation,
+      Fintech::OrderCommissions::Infrastructure::OrderCommissionsRelation,
+    )
 
     register "rom", ROM.container(config)
   end

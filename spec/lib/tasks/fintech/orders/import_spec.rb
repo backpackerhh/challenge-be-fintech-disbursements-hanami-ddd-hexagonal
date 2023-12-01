@@ -41,7 +41,7 @@ RSpec.describe "fintech:orders:import", type: %i[task database] do
         [merchant_b.id.value, BigDecimal("377.65")],
         [merchant_b.id.value, BigDecimal("138.49")],
         [merchant_b.id.value, BigDecimal("213.3")],
-        [merchant_c.id.value, BigDecimal("462.34")]
+        [merchant_c.id.value, BigDecimal("462.34")],
       ]
     )
   end

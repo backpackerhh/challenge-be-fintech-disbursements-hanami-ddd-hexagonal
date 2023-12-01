@@ -31,6 +31,16 @@ Style/ArgumentsForwarding:
   Enabled: true
   UseAnonymousForwarding: false
 
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArguments:
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+  Exclude:
+    - config/providers/persistence.rb
+
 # Metrics
 
 Metrics/ParameterLists:
