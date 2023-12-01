@@ -24,7 +24,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner:
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
@@ -104,6 +104,22 @@ CREATE TABLE public.merchants (
 ALTER TABLE public.merchants OWNER TO postgres;
 
 --
+-- Name: order_commissions; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.order_commissions (
+    id uuid NOT NULL,
+    order_amount numeric(10,2) NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    fee numeric(5,2) NOT NULL,
+    created_at timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
+    order_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.order_commissions OWNER TO postgres;
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -162,6 +178,22 @@ ALTER TABLE ONLY public.merchants
 
 
 --
+-- Name: order_commissions order_commissions_order_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_commissions
+    ADD CONSTRAINT order_commissions_order_id_key UNIQUE (order_id);
+
+
+--
+-- Name: order_commissions order_commissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_commissions
+    ADD CONSTRAINT order_commissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -193,6 +225,14 @@ ALTER TABLE ONLY public.disbursements
 
 
 --
+-- Name: order_commissions order_commissions_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_commissions
+    ADD CONSTRAINT order_commissions_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+
+--
 -- Name: orders orders_disbursement_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -211,3 +251,4 @@ ALTER TABLE ONLY public.orders
 --
 -- PostgreSQL database dump complete
 --
+
