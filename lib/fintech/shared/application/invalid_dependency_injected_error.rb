@@ -3,7 +3,7 @@
 module Fintech
   module Shared
     module Application
-      class InvalidRepositoryImplementationError < StandardError
+      class InvalidDependencyInjectedError < StandardError
       end
     end
   end

@@ -12,7 +12,7 @@ module Fintech
         def self.new(*)
           super
         rescue Dry::Struct::Error => e
-          raise InvalidRepositoryImplementationError, e
+          raise InvalidDependencyInjectedError, e
         end
 
         def self.repository(dependency_key, type:)
@@ -22,9 +22,15 @@ module Fintech
         end
 
         def self.logger
-          attribute :logger, Types::Nominal::Any
+          attribute :logger, Types::Interface(:info, :error)
 
           include Deps["logger"]
+        end
+
+        def self.event_bus
+          attribute :event_bus, Domain::EventBus::Interface
+
+          include Deps[event_bus: "domain_events.bus"]
         end
 
         def initialize(*)

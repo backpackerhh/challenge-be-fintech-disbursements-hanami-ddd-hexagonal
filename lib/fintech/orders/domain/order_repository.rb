@@ -4,7 +4,7 @@ module Fintech
   module Orders
     module Domain
       module OrderRepository
-        Interface = Dry.Types.Interface(:all, :create)
+        Interface = Types::Interface(:all, :create)
       end
     end
   end

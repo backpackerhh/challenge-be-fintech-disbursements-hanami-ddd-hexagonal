@@ -4,7 +4,7 @@ module Fintech
   module Merchants
     module Domain
       module MerchantRepository
-        Interface = Dry.Types.Interface(:all, :create)
+        Interface = Types::Interface(:all, :create)
       end
     end
   end
