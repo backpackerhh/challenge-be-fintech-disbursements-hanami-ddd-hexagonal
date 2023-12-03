@@ -6,6 +6,7 @@ module Fintech
       class CreateMerchantUseCase < Shared::Application::UseCase
         repository "merchants.repository", type: Domain::MerchantRepository::Interface
         logger
+        event_bus
 
         def create(attributes)
           merchant = Domain::MerchantEntity.from_primitives(attributes.transform_keys(&:to_sym))
@@ -13,6 +14,8 @@ module Fintech
           repository.create(merchant.to_primitives)
 
           logger.info("Merchant #{merchant.id.value} successfully created")
+
+          event_bus.publish(Domain::MerchantCreatedEvent.from(merchant))
         end
       end
     end

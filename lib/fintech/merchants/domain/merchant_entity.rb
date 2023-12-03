@@ -3,7 +3,7 @@
 module Fintech
   module Merchants
     module Domain
-      class MerchantEntity
+      class MerchantEntity < Shared::Domain::AggregateRoot
         attr_reader :id, :email, :reference, :disbursement_frequency, :live_on, :minimum_monthly_fee, :created_at
 
         def self.from_primitives(attributes)
@@ -23,6 +23,7 @@ module Fintech
                        live_on:,
                        minimum_monthly_fee:,
                        created_at: Time.now)
+          super()
           @id = MerchantIdValueObject.new(value: id)
           @email = MerchantEmailValueObject.new(value: email)
           @reference = MerchantReferenceValueObject.new(value: reference)
@@ -42,10 +43,6 @@ module Fintech
             minimum_monthly_fee: minimum_monthly_fee.value,
             created_at: created_at.value
           }
-        end
-
-        def ==(other)
-          to_primitives == other.to_primitives
         end
       end
     end

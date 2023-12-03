@@ -42,4 +42,5 @@ end
 group :test do
   gem "database_cleaner-sequel", "~> 2.0", ">= 2.0.2"
   gem "rack-test", "~> 2.1"
+  gem "timecop", "~> 0.9.8"
 end
