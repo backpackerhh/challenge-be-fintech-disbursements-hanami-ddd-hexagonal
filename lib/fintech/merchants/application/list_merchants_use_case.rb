@@ -4,7 +4,7 @@ module Fintech
   module Merchants
     module Application
       class ListMerchantsUseCase < Shared::Application::UseCase
-        repository "merchants.repository", type: Domain::MerchantRepository::Interface
+        repository "merchants.repository", Domain::MerchantRepository::Interface
         logger
 
         def all

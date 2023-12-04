@@ -15,7 +15,7 @@ module Fintech
           raise InvalidDependencyInjectedError, e
         end
 
-        def self.repository(dependency_key, type:)
+        def self.repository(dependency_key, type)
           attribute :repository, type # order matters here
 
           include Deps[repository: dependency_key]

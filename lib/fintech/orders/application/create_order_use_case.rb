@@ -4,7 +4,7 @@ module Fintech
   module Orders
     module Application
       class CreateOrderUseCase < Shared::Application::UseCase
-        repository "orders.repository", type: Domain::OrderRepository::Interface
+        repository "orders.repository", Domain::OrderRepository::Interface
         logger
 
         def create(attributes)
