@@ -5,6 +5,7 @@ require "spec_helper"
 RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case do
   describe "#create(attributes)" do
     let(:repository) { Fintech::Orders::Infrastructure::InMemoryOrderRepository.new }
+    let(:event_bus) { Fintech::Shared::Infrastructure::InMemoryEventBus.new }
     let(:attributes) do
       {
         "id" => "0df9c70e-142f-4960-859f-30aa14f8e103",
@@ -16,7 +17,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
 
     context "with valid attributes" do
       it "create order" do
-        use_case = described_class.new(repository:)
+        use_case = described_class.new(repository:, event_bus:)
 
         expect(repository).to receive(:create).with(
           {
@@ -30,11 +31,28 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
 
         use_case.create(attributes)
       end
+
+      it "publishes event about order created" do
+        use_case = described_class.new(repository:, event_bus:)
+
+        expect(event_bus).to receive(:publish).with(
+          Fintech::Orders::Domain::OrderCreatedEventFactory.build(
+            aggregate_id: "0df9c70e-142f-4960-859f-30aa14f8e103",
+            aggregate_attributes: {
+              amount: BigDecimal("102.29"),
+              merchant_id: "86312006-4d7e-45c4-9c28-788f4aa68a62",
+            },
+            occurred_at: Time.parse("2023-02-01")
+          )
+        )
+
+        use_case.create(attributes)
+      end
     end
 
     context "with invalid attributes" do
       it "does not create order (invalid ID)" do
-        use_case = described_class.new(repository:)
+        use_case = described_class.new(repository:, event_bus:)
 
         expect do
           use_case.create(attributes.merge("id" => "uuid"))
@@ -42,7 +60,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
       end
 
       it "does not create order (invalid merchant ID)" do
-        use_case = described_class.new(repository:)
+        use_case = described_class.new(repository:, event_bus:)
 
         expect do
           use_case.create(attributes.merge("merchant_id" => "uuid"))
@@ -50,7 +68,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
       end
 
       it "does not create order (invalid amount)" do
-        use_case = described_class.new(repository:)
+        use_case = described_class.new(repository:, event_bus:)
 
         expect do
           use_case.create(attributes.merge("amount" => "free"))
@@ -58,7 +76,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
       end
 
       it "does not create order (invalid created at time)" do
-        use_case = described_class.new(repository:)
+        use_case = described_class.new(repository:, event_bus:)
 
         expect do
           use_case.create(attributes.merge("created_at" => "yesterday"))

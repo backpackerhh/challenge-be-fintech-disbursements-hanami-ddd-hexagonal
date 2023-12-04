@@ -4,14 +4,14 @@ module Fintech
   module Merchants
     module Domain
       class MerchantCreatedEvent < Shared::Domain::Event
-        def self.from(entity)
+        def self.from(merchant)
           new(
-            aggregate_id: entity.id.value,
+            aggregate_id: merchant.id.value,
             aggregate_attributes: {
-              email: entity.email.value,
-              reference: entity.reference.value
+              email: merchant.email.value,
+              reference: merchant.reference.value
             },
-            occurred_at: entity.created_at.value
+            occurred_at: merchant.created_at.value
           )
         end
       end

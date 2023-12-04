@@ -3,7 +3,7 @@
 module Fintech
   module Orders
     module Domain
-      class OrderEntity
+      class OrderEntity < Shared::Domain::AggregateRoot
         attr_reader :id, :merchant_id, :disbursement_id, :amount, :created_at
 
         def self.from_primitives(attributes)
@@ -15,6 +15,7 @@ module Fintech
         end
 
         def initialize(id:, merchant_id:, disbursement_id:, amount:, created_at:)
+          super()
           @id = OrderIdValueObject.new(value: id)
           @merchant_id = OrderMerchantIdValueObject.new(value: merchant_id)
           @disbursement_id = OrderDisbursementIdValueObject.new(value: disbursement_id)
@@ -30,10 +31,6 @@ module Fintech
             amount: amount.value,
             created_at: created_at.value
           }
-        end
-
-        def ==(other)
-          to_primitives == other.to_primitives
         end
       end
     end
