@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Fintech::Merchants::Application::CreateMerchantUseCase, type: :use_case do
   describe "#create(attributes)" do
     let(:repository) { Fintech::Merchants::Infrastructure::InMemoryMerchantRepository.new }
-    let(:event_bus) { Fintech::Shared::Infrastructure::InMemoryEventBus.new }
+    let(:event_bus) { Fintech::Shared::Infrastructure::FakeInMemoryEventBus.new }
     let(:attributes) do
       {
         "id" => "86312006-4d7e-45c4-9c28-788f4aa68a62",

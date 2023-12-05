@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case do
   describe "#create(attributes)" do
     let(:repository) { Fintech::Orders::Infrastructure::InMemoryOrderRepository.new }
-    let(:event_bus) { Fintech::Shared::Infrastructure::InMemoryEventBus.new }
+    let(:event_bus) { Fintech::Shared::Infrastructure::FakeInMemoryEventBus.new }
     let(:attributes) do
       {
         "id" => "0df9c70e-142f-4960-859f-30aa14f8e103",
@@ -40,7 +40,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
             aggregate_id: "0df9c70e-142f-4960-859f-30aa14f8e103",
             aggregate_attributes: {
               amount: BigDecimal("102.29"),
-              merchant_id: "86312006-4d7e-45c4-9c28-788f4aa68a62",
+              merchant_id: "86312006-4d7e-45c4-9c28-788f4aa68a62"
             },
             occurred_at: Time.parse("2023-02-01")
           )
