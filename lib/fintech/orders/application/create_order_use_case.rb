@@ -6,7 +6,7 @@ module Fintech
       class CreateOrderUseCase < Shared::Application::UseCase
         repository "orders.repository", Domain::OrderRepository::Interface
         logger
-        event_bus
+        event_bus "domain_events.async_bus"
 
         def create(attributes)
           order = Domain::OrderEntity.from_primitives(attributes.transform_keys(&:to_sym))

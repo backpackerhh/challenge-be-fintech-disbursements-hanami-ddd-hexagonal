@@ -27,10 +27,10 @@ module Fintech
           include Deps["logger"]
         end
 
-        def self.event_bus
+        def self.event_bus(dependency_key = "domain_events.bus")
           attribute :event_bus, Domain::EventBus::Interface
 
-          include Deps[event_bus: "domain_events.bus"]
+          include Deps[event_bus: dependency_key]
         end
 
         def initialize(*)

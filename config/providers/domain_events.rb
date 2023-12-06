@@ -9,5 +9,6 @@ Hanami.app.register_provider :domain_events, namespace: true do
 
   start do
     register "bus", Fintech::Shared::Infrastructure::InMemoryEventBus.new
+    register "async_bus", Fintech::Shared::Infrastructure::SidekiqEventBus.new
   end
 end

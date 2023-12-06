@@ -12,6 +12,7 @@ gem "rom", "~> 5.3"
 gem "rom-sql", "~> 3.6"
 
 gem "dry-types", "~> 1.0", ">= 1.6.1"
+gem "json-schema", "~> 4.1", ">= 4.1.1"
 gem "puma", "~> 6.4"
 gem "rake", "~> 13.1"
 gem "redis", "~> 5.0", ">= 5.0.8"
