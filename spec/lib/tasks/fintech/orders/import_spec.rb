@@ -34,15 +34,13 @@ RSpec.describe "fintech:orders:import", type: %i[task database] do
 
     orders = Fintech::Container["orders.repository"].all
 
-    expect(orders.map { |o| [o.merchant_id.value, o.amount.value] }).to match_array(
-      [
-        [merchant_a.id.value, BigDecimal("102.29")],
-        [merchant_a.id.value, BigDecimal("433.21")],
-        [merchant_b.id.value, BigDecimal("377.65")],
-        [merchant_b.id.value, BigDecimal("138.49")],
-        [merchant_b.id.value, BigDecimal("213.3")],
-        [merchant_c.id.value, BigDecimal("462.34")],
-      ]
+    expect(orders.map { |o| [o.merchant_id.value, o.amount.value] }).to contain_exactly(
+      [merchant_a.id.value, BigDecimal("102.29")],
+      [merchant_a.id.value, BigDecimal("433.21")],
+      [merchant_b.id.value, BigDecimal("377.65")],
+      [merchant_b.id.value, BigDecimal("138.49")],
+      [merchant_b.id.value, BigDecimal("213.3")],
+      [merchant_c.id.value, BigDecimal("462.34")]
     )
   end
 end
