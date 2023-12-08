@@ -6,5 +6,11 @@ production:
   :concurrency: 10
 :queues:
   - [domain_events, 2]
+  - [disbursements, 2]
   - [import_data, 2]
   - default
+:scheduler:
+  :schedule:
+    generate_disbursements:
+      cron: '0 0 7 * * * UTC' # Every day at 07:00:00 UTC
+      class: Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob

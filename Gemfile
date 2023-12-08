@@ -17,7 +17,9 @@ gem "puma", "~> 6.4"
 gem "rake", "~> 13.1"
 gem "redis", "~> 5.0", ">= 5.0.8"
 gem "sidekiq", "~> 7.2"
+gem "sidekiq-scheduler", "~> 5.0", ">= 5.0.3"
 gem "smarter_csv", "~> 1.9", ">= 1.9.2"
+gem "tzinfo-data", "~> 1.2023", ">= 1.2023.3"
 
 group :development, :test do
   gem "debug"
