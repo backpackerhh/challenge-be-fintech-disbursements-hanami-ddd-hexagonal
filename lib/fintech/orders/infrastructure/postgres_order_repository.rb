@@ -30,6 +30,8 @@ module Fintech
           end
 
           Domain::OrderEntity.from_primitives(order)
+        rescue Sequel::DatabaseError => e
+          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
       end
     end

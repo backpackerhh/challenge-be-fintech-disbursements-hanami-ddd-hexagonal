@@ -67,4 +67,35 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
       end
     end
   end
+
+  describe "#find_by_id(id)" do
+    it "logs any error from the database" do
+      repository = described_class.new
+
+      expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
+
+      repository.find_by_id("uuid")
+    end
+
+    context "when given order does not exist" do
+
+      it "raises an exception" do
+        repository = described_class.new
+
+        expect do
+          repository.find_by_id(SecureRandom.uuid)
+        end.to raise_error(Fintech::Orders::Domain::OrderNotFoundError)
+      end
+    end
+
+    context "when given order exists" do
+      it "returns an instance of the entity" do
+        repository = described_class.new
+        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
+        order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
+
+        expect(repository.find_by_id(order.id.value)).to eq(order)
+      end
+    end
+  end
 end
