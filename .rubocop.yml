@@ -41,6 +41,11 @@ Style/TrailingCommaInArguments:
   Exclude:
     - config/providers/persistence.rb
 
+Style/CaseEquality:
+  Enabled: true
+  Exclude:
+    - lib/fintech/order_commissions/domain/extract_fee_service.rb
+
 # Metrics
 
 Metrics/ParameterLists:
@@ -64,6 +69,7 @@ Metrics/AbcSize:
   CountRepeatedAttributes: false
   Exclude:
     - lib/fintech/orders/infrastructure/import_orders_job.rb
+    - lib/fintech/order_commissions/application/create_order_commission_use_case.rb
 
 # Tests
 

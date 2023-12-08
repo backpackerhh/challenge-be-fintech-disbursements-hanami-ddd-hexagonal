@@ -10,8 +10,14 @@ module Fintech
           new(id: attributes.fetch(:id, SecureRandom.uuid),
               order_id: attributes.fetch(:order_id),
               order_amount: attributes.fetch(:order_amount),
-              fee: attributes.fetch(:fee),
-              amount: attributes.fetch(:amount),
+              fee: attributes.fetch(
+                :fee,
+                ExtractFeeService.new(order_amount: attributes.fetch(:order_amount)).fee
+              ),
+              amount: attributes.fetch(
+                :amount,
+                CalculateAmountService.new(order_amount: attributes.fetch(:order_amount)).amount
+              ),
               created_at: attributes.fetch(:created_at, Time.now))
         end
 
