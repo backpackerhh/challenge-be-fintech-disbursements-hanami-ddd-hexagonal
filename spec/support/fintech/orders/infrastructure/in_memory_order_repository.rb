@@ -6,6 +6,8 @@ module Fintech
       class InMemoryOrderRepository
         def all; end
 
+        def find_by_id(_id); end
+
         def create(attributes); end
       end
     end

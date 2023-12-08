@@ -3,8 +3,7 @@
 module Fintech
   module Orders
     module Domain
-      module OrderRepository
-        Interface = Types::Interface(:all, :create, :find_by_id)
+      class OrderNotFoundError < StandardError
       end
     end
   end

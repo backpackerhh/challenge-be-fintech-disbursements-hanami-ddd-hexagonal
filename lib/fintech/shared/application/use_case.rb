@@ -22,7 +22,7 @@ module Fintech
         end
 
         def self.logger
-          attribute :logger, Types::Interface(:info, :error)
+          attribute :logger, Types::Instance(Dry::Logger::Dispatcher)
 
           include Deps["logger"]
         end
@@ -31,6 +31,12 @@ module Fintech
           attribute :event_bus, Domain::EventBus::Interface
 
           include Deps[event_bus: dependency_key]
+        end
+
+        def self.finder_use_case(dependency_key)
+          attribute :finder_use_case, Types::Instance(UseCase)
+
+          include Deps[finder_use_case: dependency_key]
         end
 
         def initialize(*)
