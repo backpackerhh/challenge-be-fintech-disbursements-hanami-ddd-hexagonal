@@ -5,7 +5,7 @@ module Fintech
     module Domain
       class OrderCreatedEvent < Shared::Domain::Event
         def self.from(order)
-          new(
+          from_primitives(
             aggregate_id: order.id.value,
             aggregate_attributes: {
               amount: order.amount.value,

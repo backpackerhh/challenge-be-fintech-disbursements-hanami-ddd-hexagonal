@@ -35,7 +35,7 @@ RSpec.describe Fintech::Shared::Infrastructure::SidekiqEventBus, type: :event_bu
     it "provides given event to all its subscribers", :sidekiq_inline do
       event_subscribers = [Fintech::Shared::Application::FakeEventSubscriber]
       event_subscriber = Fintech::Shared::Application::FakeEventSubscriber.new
-      event = Fintech::Shared::Domain::FakeEvent.new(
+      event = Fintech::Shared::Domain::FakeEvent.from_primitives(
         aggregate_id: SecureRandom.uuid,
         aggregate_attributes: {
           a: 1,
@@ -55,7 +55,7 @@ RSpec.describe Fintech::Shared::Infrastructure::SidekiqEventBus, type: :event_bu
 
     it "raises an exception when event data is not as expected" do
       event_subscribers = [Fintech::Shared::Application::FakeEventSubscriber]
-      event = Fintech::Shared::Domain::FakeEvent.new(
+      event = Fintech::Shared::Domain::FakeEvent.from_primitives(
         aggregate_id: "uuid",
         aggregate_attributes: {},
         occurred_at: Time.now

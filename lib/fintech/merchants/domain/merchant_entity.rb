@@ -16,13 +16,7 @@ module Fintech
               created_at: attributes.fetch(:created_at, Time.now))
         end
 
-        def initialize(id:,
-                       email:,
-                       reference:,
-                       disbursement_frequency:,
-                       live_on:,
-                       minimum_monthly_fee:,
-                       created_at: Time.now)
+        def initialize(id:, email:, reference:, disbursement_frequency:, live_on:, minimum_monthly_fee:, created_at:)
           super()
           @id = MerchantIdValueObject.new(value: id)
           @email = MerchantEmailValueObject.new(value: email)

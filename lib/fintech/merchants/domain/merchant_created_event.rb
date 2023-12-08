@@ -5,7 +5,7 @@ module Fintech
     module Domain
       class MerchantCreatedEvent < Shared::Domain::Event
         def self.from(merchant)
-          new(
+          from_primitives(
             aggregate_id: merchant.id.value,
             aggregate_attributes: {
               email: merchant.email.value,

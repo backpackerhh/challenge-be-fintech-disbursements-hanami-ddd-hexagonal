@@ -6,18 +6,20 @@ module Fintech
       class Event
         attr_reader :aggregate_id, :aggregate_attributes, :occurred_at, :id, :name
 
+        private_class_method :new
+
         def self.from_primitives(attributes)
-          new(aggregate_id: attributes.fetch(:aggregate_id),
+          new(id: attributes.fetch(:id, SecureRandom.uuid),
+              aggregate_id: attributes.fetch(:aggregate_id),
               aggregate_attributes: attributes.fetch(:aggregate_attributes),
-              occurred_at: attributes.fetch(:occurred_at),
-              id: attributes.fetch(:id, nil))
+              occurred_at: attributes.fetch(:occurred_at))
         end
 
-        def initialize(aggregate_id:, aggregate_attributes:, occurred_at:, id: nil)
+        def initialize(id:, aggregate_id:, aggregate_attributes:, occurred_at:)
+          @id = id
           @aggregate_id = aggregate_id
           @aggregate_attributes = aggregate_attributes
           @occurred_at = occurred_at
-          @id = id || SecureRandom.uuid
           @name = self.class.name
         end
 

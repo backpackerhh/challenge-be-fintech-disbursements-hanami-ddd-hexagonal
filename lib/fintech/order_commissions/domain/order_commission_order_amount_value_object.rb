@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Fintech
-  module OrderCommisions
+  module OrderCommissions
     module Domain
-      class OrderCommisionOrderAmountValueObject < Shared::Domain::DecimalValueObject
+      class OrderCommissionOrderAmountValueObject < Shared::Domain::DecimalValueObject
       end
     end
   end

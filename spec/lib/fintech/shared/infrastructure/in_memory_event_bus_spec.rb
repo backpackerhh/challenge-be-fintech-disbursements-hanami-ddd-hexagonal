@@ -35,7 +35,7 @@ RSpec.describe Fintech::Shared::Infrastructure::InMemoryEventBus, type: :event_b
     it "provides given event to all its subscribers" do
       event_subscribers = [Fintech::Shared::Application::FakeEventSubscriber]
       event_subscriber = Fintech::Shared::Application::FakeEventSubscriber.new
-      event = Fintech::Shared::Domain::FakeEvent.new(
+      event = Fintech::Shared::Domain::FakeEvent.from_primitives(
         aggregate_id: "uuid",
         aggregate_attributes: {},
         occurred_at: Time.now
