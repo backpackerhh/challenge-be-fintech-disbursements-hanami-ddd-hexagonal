@@ -8,8 +8,12 @@ module Fintech
           f.id { Fintech::OrderCommissions::Domain::OrderCommissionIdFactory.build }
           f.order_id { Fintech::OrderCommissions::Domain::OrderCommissionOrderIdFactory.build }
           f.order_amount { Fintech::OrderCommissions::Domain::OrderCommissionOrderAmountFactory.build }
-          f.amount { Fintech::OrderCommissions::Domain::OrderCommissionAmountFactory.build }
-          f.fee { Fintech::OrderCommissions::Domain::OrderCommissionFeeFactory.build }
+          f.fee do |order_amount|
+            Fintech::OrderCommissions::Domain::OrderCommissionFeeFactory.build(order_amount)
+          end
+          f.amount do |order_amount|
+            Fintech::OrderCommissions::Domain::OrderCommissionAmountFactory.build(order_amount)
+          end
           f.created_at { Fintech::OrderCommissions::Domain::OrderCommissionCreatedAtFactory.build }
         end
 

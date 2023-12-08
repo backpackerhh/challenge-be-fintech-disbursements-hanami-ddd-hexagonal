@@ -4,8 +4,8 @@ module Fintech
   module OrderCommissions
     module Domain
       class OrderCommissionAmountFactory
-        def self.build(value = rand(200))
-          value
+        def self.build(value)
+          CalculateAmountService.new(order_amount: value).amount
         end
       end
     end

@@ -5,13 +5,15 @@ module Fintech
     module Domain
       class OrderCommissionCreatedEventFactory
         def self.build(attributes = {})
+          order_amount = OrderCommissionOrderAmountFactory.build
+
           OrderCommissionCreatedEvent.from_primitives(
             {
               aggregate_id: OrderCommissionIdFactory.build,
               aggregate_attributes: {
                 order_id: OrderCommissionOrderIdFactory.build,
-                order_amount: OrderCommissionOrderAmountFactory.build,
-                amount: OrderCommissionAmountFactory.build
+                order_amount:,
+                amount: OrderCommissionAmountFactory.build(order_amount)
               },
               occurred_at: OrderCommissionCreatedAtFactory.build
             }.merge(attributes)
