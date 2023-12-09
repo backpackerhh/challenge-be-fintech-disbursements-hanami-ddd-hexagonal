@@ -7,7 +7,7 @@ module Fintech
         repository "merchants.repository", Domain::MerchantRepository::Interface
         logger
 
-        def all
+        def retrieve_all
           merchants = repository.all
 
           logger.info("Merchants successfully retrieved")

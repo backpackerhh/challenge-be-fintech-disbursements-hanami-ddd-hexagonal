@@ -33,7 +33,7 @@ module Fintech
 
         def merchants_dictionary
           @merchants_dictionary ||= begin
-            merchants = list_merchants_use_case.all
+            merchants = list_merchants_use_case.retrieve_all
 
             merchants.each_with_object({}) do |merchant, dictionary|
               dictionary[merchant.reference.value] = merchant.id.value
