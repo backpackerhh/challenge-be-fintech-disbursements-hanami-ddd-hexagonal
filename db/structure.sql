@@ -80,7 +80,9 @@ CREATE TABLE public.disbursements (
     commissions_amount numeric(10,2) NOT NULL,
     order_ids uuid[] NOT NULL,
     created_at timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
-    merchant_id uuid NOT NULL
+    merchant_id uuid NOT NULL,
+    start_date date NOT NULL,
+    end_date date NOT NULL
 );
 
 

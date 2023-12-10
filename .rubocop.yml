@@ -68,6 +68,7 @@ Metrics/AbcSize:
   Enabled: true
   CountRepeatedAttributes: false
   Exclude:
+    - lib/fintech/disbursements/domain/disbursement_entity.rb
     - lib/fintech/orders/infrastructure/import_orders_job.rb
     - lib/fintech/order_commissions/application/create_order_commission_use_case.rb
 

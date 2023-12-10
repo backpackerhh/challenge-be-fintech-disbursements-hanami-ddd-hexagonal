@@ -5,15 +5,15 @@ module Fintech
     module Domain
       class DisbursementEntityFactory
         Factory.define(:disbursement) do |f|
-          f.id { Fintech::Disbursements::Domain::DisbursementIdFactory.build }
-          f.merchant_id { Fintech::Disbursements::Domain::DisbursementMerchantIdFactory.build }
-          f.reference { Fintech::Disbursements::Domain::DisbursementReferenceFactory.build }
-          f.amount { Fintech::Disbursements::Domain::DisbursementAmountFactory.build }
-          f.commissions_amount do |amount|
-            Fintech::Disbursements::Domain::DisbursementCommissionsAmountFactory.build(amount)
-          end
-          f.order_ids { Fintech::Disbursements::Domain::DisbursementOrderIdsFactory.build }
-          f.created_at { Fintech::Disbursements::Domain::DisbursementCreatedAtFactory.build }
+          f.id { DisbursementIdFactory.build }
+          f.merchant_id { DisbursementMerchantIdFactory.build }
+          f.reference { DisbursementReferenceFactory.build }
+          f.amount { DisbursementAmountFactory.build }
+          f.commissions_amount { |amount| DisbursementCommissionsAmountFactory.build(amount) }
+          f.order_ids { DisbursementOrderIdsFactory.build }
+          f.start_date { DisbursementStartDateFactory.build }
+          f.end_date { DisbursementEndDateFactory.build }
+          f.created_at { DisbursementCreatedAtFactory.build }
         end
 
         def self.build(*traits, **attributes)
