@@ -5,13 +5,13 @@ module Fintech
     module Domain
       class MerchantEntityFactory
         Factory.define(:merchant) do |f|
-          f.id { Fintech::Merchants::Domain::MerchantIdFactory.build }
-          f.reference { Fintech::Merchants::Domain::MerchantReferenceFactory.build }
-          f.email { Fintech::Merchants::Domain::MerchantEmailFactory.build }
-          f.disbursement_frequency { Fintech::Merchants::Domain::MerchantDisbursementFrequencyFactory.build }
-          f.live_on { Fintech::Merchants::Domain::MerchantLiveOnFactory.build }
-          f.minimum_monthly_fee { Fintech::Merchants::Domain::MerchantMinimumMonthlyFeeFactory.build }
-          f.created_at { Fintech::Merchants::Domain::MerchantCreatedAtFactory.build }
+          f.id { MerchantIdFactory.build }
+          f.reference { MerchantReferenceFactory.build }
+          f.email { MerchantEmailFactory.build }
+          f.disbursement_frequency { MerchantDisbursementFrequencyFactory.build }
+          f.live_on { MerchantLiveOnFactory.build }
+          f.minimum_monthly_fee { MerchantMinimumMonthlyFeeFactory.build }
+          f.created_at { MerchantCreatedAtFactory.build }
         end
 
         def self.build(*traits, **attributes)

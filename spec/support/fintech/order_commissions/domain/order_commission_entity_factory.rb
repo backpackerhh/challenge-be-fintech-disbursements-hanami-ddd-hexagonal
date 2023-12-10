@@ -5,16 +5,12 @@ module Fintech
     module Domain
       class OrderCommissionEntityFactory
         Factory.define(:order_commission) do |f|
-          f.id { Fintech::OrderCommissions::Domain::OrderCommissionIdFactory.build }
-          f.order_id { Fintech::OrderCommissions::Domain::OrderCommissionOrderIdFactory.build }
-          f.order_amount { Fintech::OrderCommissions::Domain::OrderCommissionOrderAmountFactory.build }
-          f.fee do |order_amount|
-            Fintech::OrderCommissions::Domain::OrderCommissionFeeFactory.build(order_amount)
-          end
-          f.amount do |order_amount|
-            Fintech::OrderCommissions::Domain::OrderCommissionAmountFactory.build(order_amount)
-          end
-          f.created_at { Fintech::OrderCommissions::Domain::OrderCommissionCreatedAtFactory.build }
+          f.id { OrderCommissionIdFactory.build }
+          f.order_id { OrderCommissionOrderIdFactory.build }
+          f.order_amount { OrderCommissionOrderAmountFactory.build }
+          f.fee { |order_amount| OrderCommissionFeeFactory.build(order_amount) }
+          f.amount { |order_amount| OrderCommissionAmountFactory.build(order_amount) }
+          f.created_at { OrderCommissionCreatedAtFactory.build }
         end
 
         def self.build(*traits, **attributes)

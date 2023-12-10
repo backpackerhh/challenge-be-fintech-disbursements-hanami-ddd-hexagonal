@@ -5,13 +5,13 @@ module Fintech
     module Domain
       class OrderEntityFactory
         Factory.define(:order) do |f|
-          f.id { Fintech::Orders::Domain::OrderIdFactory.build }
-          f.merchant_id { Fintech::Orders::Domain::OrderMerchantIdFactory.build }
-          f.amount { Fintech::Orders::Domain::OrderAmountFactory.build }
-          f.created_at { Fintech::Orders::Domain::OrderCreatedAtFactory.build }
+          f.id { OrderIdFactory.build }
+          f.merchant_id { OrderMerchantIdFactory.build }
+          f.amount { OrderAmountFactory.build }
+          f.created_at { OrderCreatedAtFactory.build }
 
           f.trait :disbursed do |d|
-            d.disbursement_id { Fintech::Orders::Domain::OrderDisbursementIdFactory.build }
+            d.disbursement_id { OrderDisbursementIdFactory.build }
           end
         end
 
