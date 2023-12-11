@@ -7,5 +7,6 @@ Hanami.app.register_provider :orders, namespace: true do
 
   start do
     register "find.use_case", Fintech::Orders::Application::FindOrderUseCase.new
+    register "group_disbursable.job", Fintech::Orders::Infrastructure::GroupDisbursableOrdersJob
   end
 end

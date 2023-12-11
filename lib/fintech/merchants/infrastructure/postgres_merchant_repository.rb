@@ -14,6 +14,10 @@ module Fintech
           merchants.map { |merchant| Domain::MerchantEntity.from_primitives(merchant) }
         end
 
+        def grouped_disbursable_ids
+          # TODO
+        end
+
         def create(attributes)
           db.transaction do
             rom.relations[:merchants].insert(attributes)

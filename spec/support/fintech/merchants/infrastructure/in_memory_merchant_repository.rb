@@ -6,6 +6,8 @@ module Fintech
       class InMemoryMerchantRepository
         def all; end
 
+        def grouped_disbursable_ids; end
+
         def create(attributes); end
       end
     end
