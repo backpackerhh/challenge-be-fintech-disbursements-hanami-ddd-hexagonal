@@ -7,12 +7,9 @@ module Fintech
         Factory.define(:order) do |f|
           f.id { OrderIdFactory.build }
           f.merchant_id { OrderMerchantIdFactory.build }
+          f.disbursement_id { OrderDisbursementIdFactory.build }
           f.amount { OrderAmountFactory.build }
           f.created_at { OrderCreatedAtFactory.build }
-
-          f.trait :disbursed do |d|
-            d.disbursement_id { OrderDisbursementIdFactory.build }
-          end
         end
 
         def self.build(*traits, **attributes)

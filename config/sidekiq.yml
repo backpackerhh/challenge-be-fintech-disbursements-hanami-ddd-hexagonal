@@ -12,5 +12,6 @@ production:
 :scheduler:
   :schedule:
     generate_disbursements:
+      description: 'Start process to generate disbursements'
       cron: '0 0 7 * * * UTC' # Every day at 07:00:00 UTC
       class: Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob

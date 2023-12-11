@@ -4,7 +4,7 @@ module Fintech
   module Orders
     module Domain
       class OrderDisbursementIdFactory
-        def self.build(value = SecureRandom.uuid)
+        def self.build(value = nil)
           value
         end
       end

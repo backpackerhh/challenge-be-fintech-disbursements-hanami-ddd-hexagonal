@@ -3,10 +3,8 @@
 module Fintech
   module Disbursements
     module Domain
-      class DisbursementOrderIdsFactory
-        def self.build(value = [])
-          value
-        end
+      module DisbursementRepository
+        Interface = Types::Interface(:all, :create)
       end
     end
   end

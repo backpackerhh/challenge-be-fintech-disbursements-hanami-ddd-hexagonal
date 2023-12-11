@@ -12,6 +12,14 @@ module Fintech
           f.live_on { MerchantLiveOnFactory.build }
           f.minimum_monthly_fee { MerchantMinimumMonthlyFeeFactory.build }
           f.created_at { MerchantCreatedAtFactory.build }
+
+          f.trait :weekly_disbursement do |m|
+            m.disbursement_frequency { MerchantDisbursementFrequencyFactory.weekly }
+          end
+
+          f.trait :daily_disbursement do |m|
+            m.disbursement_frequency { MerchantDisbursementFrequencyFactory.daily }
+          end
         end
 
         def self.build(*traits, **attributes)

@@ -72,6 +72,20 @@ Metrics/AbcSize:
     - lib/fintech/orders/infrastructure/import_orders_job.rb
     - lib/fintech/order_commissions/application/create_order_commission_use_case.rb
 
+# Lint
+
+Lint/UselessAssignment:
+  Enabled: true
+  Exclude:
+    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+
+# Naming
+
+Naming/VariableNumber:
+  Enabled: true
+  Exclude:
+    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+
 # Tests
 
 RSpec/MultipleExpectations:
@@ -80,6 +94,7 @@ RSpec/MultipleExpectations:
     - spec/requests/root_spec.rb
     - spec/lib/tasks/fintech/**/*.rb
     - spec/lib/fintech/**/*_event_subscriber_spec.rb
+    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: true
@@ -90,6 +105,9 @@ RSpec/ExampleLength:
   Enabled: true
   CountAsOne: ["array", "hash", "method_call", "heredoc"]
   Max: 10
+  Exclude:
+    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/order_commissions/application/create_order_commission_on_order_created_event_subscriber_spec.rb
 
 RSpec/ContextWording:
   Enabled: true
