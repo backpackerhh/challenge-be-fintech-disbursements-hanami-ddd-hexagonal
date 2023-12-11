@@ -78,6 +78,7 @@ Lint/UselessAssignment:
   Enabled: true
   Exclude:
     - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/merchants/infrastructure/postgres_merchant_repository_spec.rb
 
 # Naming
 

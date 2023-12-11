@@ -23,6 +23,36 @@ RSpec.describe Fintech::Merchants::Infrastructure::PostgresMerchantRepository, t
     end
   end
 
+  describe "#grouped_disbursable_ids" do
+    it "returns all disbursable merchant IDs grouped by disbursement frequency", freeze_time: "2023-04-14 07:00:00" do
+      repository = described_class.new
+      merchant_a = Fintech::Merchants::Domain::MerchantEntityFactory.create(:daily_disbursement)
+      merchant_b = Fintech::Merchants::Domain::MerchantEntityFactory.create(:daily_disbursement)
+      merchant_c = Fintech::Merchants::Domain::MerchantEntityFactory.create(
+        :weekly_disbursement,
+        live_on: Date.parse("2023-04-06")
+      )
+      merchant_d = Fintech::Merchants::Domain::MerchantEntityFactory.create(
+        :weekly_disbursement,
+        live_on: Date.parse("2023-04-07")
+      )
+
+      grouped_disbursable_merchant_ids = repository.grouped_disbursable_ids
+
+      expect(grouped_disbursable_merchant_ids).to eq(
+        {
+          Fintech::Merchants::Domain::MerchantDisbursementFrequencyFactory.daily => [
+            merchant_a.id.value,
+            merchant_b.id.value,
+          ],
+          Fintech::Merchants::Domain::MerchantDisbursementFrequencyFactory.weekly => [
+            merchant_d.id.value,
+          ]
+        }
+      )
+    end
+  end
+
   describe "#create(attributes)" do
     context "with errors" do
       it "does not create a new merchant" do

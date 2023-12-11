@@ -15,7 +15,22 @@ module Fintech
         end
 
         def grouped_disbursable_ids
-          # TODO
+          grouped_merchant_ids = db[
+            <<~SQL
+              SELECT ARRAY_AGG(id) AS merchant_ids, disbursement_frequency
+              FROM merchants
+              WHERE disbursement_frequency = '#{Domain::MerchantDisbursementFrequencyValueObject::DAILY}'
+              OR (
+                disbursement_frequency = '#{Domain::MerchantDisbursementFrequencyValueObject::WEEKLY}' AND
+                DATE_PART('isodow', live_on) = DATE_PART('isodow', DATE '#{Date.today}')
+              )
+              GROUP BY disbursement_frequency
+            SQL
+          ]
+
+          grouped_merchant_ids.to_a.each_with_object({}) do |row, results|
+            results[row[:disbursement_frequency]] = row[:merchant_ids]
+          end
         end
 
         def create(attributes)
