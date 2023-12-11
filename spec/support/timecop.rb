@@ -4,8 +4,8 @@ require "timecop"
 
 RSpec.configure do |config|
   config.around do |example|
-    if example.metadata[:freeze_time]
-      Timecop.freeze(Time.now) { example.run }
+    if (time = example.metadata[:freeze_time])
+      Timecop.freeze(time) { example.run }
     else
       example.run
     end

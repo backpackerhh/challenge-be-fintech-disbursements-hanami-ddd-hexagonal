@@ -35,8 +35,8 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end.to raise_error(Fintech::OrderCommissions::Domain::AlreadyExistingOrderCommissionError)
     end
 
-    context "with valid attributes", :freeze_time do
-      it "create order commission with tier 1 fee" do
+    context "with valid attributes", freeze_time: Time.now do
+      it "creates order commission with tier 1 fee" do
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect(repository).to receive(:create).with(
@@ -53,7 +53,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
         use_case.create(attributes.merge(order_amount: BigDecimal("49.99")))
       end
 
-      it "create order commission with tier 2 fee" do
+      it "creates order commission with tier 2 fee" do
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect(repository).to receive(:create).with(
@@ -70,7 +70,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
         use_case.create(attributes.merge(order_amount: BigDecimal("299.99")))
       end
 
-      it "create order commission with tier 3 fee" do
+      it "creates order commission with tier 3 fee" do
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect(repository).to receive(:create).with(

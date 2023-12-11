@@ -16,7 +16,7 @@ RSpec.describe Fintech::Orders::Application::CreateOrderUseCase, type: :use_case
     end
 
     context "with valid attributes" do
-      it "create order" do
+      it "creates order" do
         use_case = described_class.new(repository:, event_bus:)
 
         expect(repository).to receive(:create).with(

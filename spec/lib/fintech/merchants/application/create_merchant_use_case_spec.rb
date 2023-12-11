@@ -18,7 +18,7 @@ RSpec.describe Fintech::Merchants::Application::CreateMerchantUseCase, type: :us
     end
 
     context "with valid attributes" do
-      it "create merchant", :freeze_time do
+      it "creates merchant", freeze_time: Time.now do
         use_case = described_class.new(repository:, event_bus:)
 
         expect(repository).to receive(:create).with(
@@ -36,7 +36,7 @@ RSpec.describe Fintech::Merchants::Application::CreateMerchantUseCase, type: :us
         use_case.create(attributes)
       end
 
-      it "publishes event about merchant created", :freeze_time do
+      it "publishes event about merchant created", freeze_time: Time.now do
         use_case = described_class.new(repository:, event_bus:)
 
         expect(event_bus).to receive(:publish).with(
