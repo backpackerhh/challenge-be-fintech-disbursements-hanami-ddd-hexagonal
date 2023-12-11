@@ -21,9 +21,11 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionOnOr
 
       event_subscriber.on(order_created_event)
 
-      order_commissions = Fintech::Container["order_commissions.repository"].all
+      order_commissions = Fintech::Container["order_commissions.repository"].all.map do |oc|
+        [oc.order_id.value, oc.order_amount.value]
+      end
 
-      expect(order_commissions.map { |oc| [oc.order_id.value, oc.order_amount.value] }).to contain_exactly(
+      expect(order_commissions).to contain_exactly(
         [order.id.value, order.amount.value]
       )
     end

@@ -32,9 +32,11 @@ RSpec.describe "fintech:orders:import", type: %i[task database] do
 
     task.invoke("spec/support/data/orders.csv")
 
-    orders = Fintech::Container["orders.repository"].all
+    orders = Fintech::Container["orders.repository"].all.map do |o|
+      [o.merchant_id.value, o.amount.value]
+    end
 
-    expect(orders.map { |o| [o.merchant_id.value, o.amount.value] }).to contain_exactly(
+    expect(orders).to contain_exactly(
       [merchant_a.id.value, BigDecimal("102.29")],
       [merchant_a.id.value, BigDecimal("433.21")],
       [merchant_b.id.value, BigDecimal("377.65")],
