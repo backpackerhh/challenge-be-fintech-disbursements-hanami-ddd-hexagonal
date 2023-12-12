@@ -17,19 +17,19 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
       repository = described_class.new
       merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
       order_a = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
-      order_commission_order_a = Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+      order_a_commission = Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
         order_id: order_a.id.value,
         order_amount: order_a.amount.value
       )
       order_b = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
-      order_commission_order_b = Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+      order_b_commission = Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
         order_id: order_b.id.value,
         order_amount: order_b.amount.value
       )
 
       order_commissions = repository.all
 
-      expect(order_commissions).to contain_exactly(order_commission_order_a, order_commission_order_b)
+      expect(order_commissions).to contain_exactly(order_a_commission, order_b_commission)
     end
   end
 
@@ -44,13 +44,15 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
           order_amount: order.amount.value
         )
 
-        initial_order_commissions = repository.all
+        order_commissions = repository.all
+
+        expect(order_commissions.size).to eq(1)
 
         repository.create(order_commission.to_primitives)
 
-        new_order_commissions = repository.all
+        order_commissions = repository.all
 
-        expect(new_order_commissions.map(&:id)).to eq(initial_order_commissions.map(&:id))
+        expect(order_commissions.size).to eq(1)
       end
 
       it "logs any error from the database" do
@@ -78,13 +80,15 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
           order_amount: order.amount.value
         )
 
-        initial_order_commissions = repository.all
+        order_commissions = repository.all
+
+        expect(order_commissions.size).to eq(0)
 
         repository.create(order_commission.to_primitives)
 
-        new_order_commissions = repository.all
+        order_commissions = repository.all
 
-        expect(new_order_commissions.map(&:id)).not_to eq(initial_order_commissions.map(&:id))
+        expect(order_commissions.size).to eq(1)
       end
     end
   end

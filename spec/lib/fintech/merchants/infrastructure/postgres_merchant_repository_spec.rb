@@ -59,13 +59,15 @@ RSpec.describe Fintech::Merchants::Infrastructure::PostgresMerchantRepository, t
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
 
-        initial_merchants = repository.all
+        merchants = repository.all
+
+        expect(merchants.size).to eq(1)
 
         repository.create(merchant.to_primitives)
 
-        new_merchants = repository.all
+        merchants = repository.all
 
-        expect(new_merchants.map(&:id)).to eq(initial_merchants.map(&:id))
+        expect(merchants.size).to eq(1)
       end
 
       it "logs any error from the database" do
@@ -83,13 +85,15 @@ RSpec.describe Fintech::Merchants::Infrastructure::PostgresMerchantRepository, t
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.build
 
-        initial_merchants = repository.all
+        merchants = repository.all
+
+        expect(merchants.size).to eq(0)
 
         repository.create(merchant.to_primitives)
 
-        new_merchants = repository.all
+        merchants = repository.all
 
-        expect(new_merchants.map(&:id)).not_to eq(initial_merchants.map(&:id))
+        expect(merchants.size).to eq(1)
       end
     end
   end

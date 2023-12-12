@@ -31,13 +31,15 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
         order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
 
-        initial_orders = repository.all
+        orders = repository.all
+
+        expect(orders.size).to eq(1)
 
         repository.create(order.to_primitives)
 
-        new_orders = repository.all
+        orders = repository.all
 
-        expect(new_orders.map(&:id)).to eq(initial_orders.map(&:id))
+        expect(orders.size).to eq(1)
       end
 
       it "logs any error from the database" do
@@ -57,13 +59,15 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
         order = Fintech::Orders::Domain::OrderEntityFactory.build(merchant_id: merchant.id.value)
 
-        initial_orders = repository.all
+        orders = repository.all
+
+        expect(orders.size).to eq(0)
 
         repository.create(order.to_primitives)
 
-        new_orders = repository.all
+        orders = repository.all
 
-        expect(new_orders.map(&:id)).not_to eq(initial_orders.map(&:id))
+        expect(orders.size).to eq(1)
       end
     end
   end
