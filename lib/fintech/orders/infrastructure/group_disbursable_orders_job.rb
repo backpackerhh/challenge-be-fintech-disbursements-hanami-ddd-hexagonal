@@ -12,7 +12,9 @@ module Fintech
           grouped_orders = Application::GroupDisbursableOrdersUseCase.new.retrieve_grouped(grouping_type, merchant_id)
 
           grouped_orders.each do |disbursement_attributes|
-            create_disbursement_job.perform_async(disbursement_attributes.merge(merchant_id:))
+            attributes = JSON.parse(disbursement_attributes.merge(merchant_id:).to_json)
+
+            create_disbursement_job.perform_async(attributes)
           end
         end
       end

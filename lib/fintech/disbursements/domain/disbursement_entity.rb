@@ -15,15 +15,15 @@ module Fintech
                     :created_at
 
         def self.from_primitives(attributes)
-          new(id: attributes.fetch(:id),
+          new(id: attributes.fetch(:id, SecureRandom.uuid),
               merchant_id: attributes.fetch(:merchant_id),
-              reference: attributes.fetch(:reference),
+              reference: attributes.fetch(:reference, SecureRandom.alphanumeric(12)),
               amount: attributes.fetch(:amount),
               commissions_amount: attributes.fetch(:commissions_amount),
               order_ids: attributes.fetch(:order_ids),
               start_date: attributes.fetch(:start_date),
               end_date: attributes.fetch(:end_date),
-              created_at: attributes.fetch(:created_at))
+              created_at: attributes.fetch(:created_at, Time.now))
         end
 
         def initialize(id:,
