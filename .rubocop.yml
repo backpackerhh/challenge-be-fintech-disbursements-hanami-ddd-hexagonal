@@ -109,8 +109,8 @@ RSpec/ExampleLength:
   CountAsOne: ["array", "hash", "method_call", "heredoc"]
   Max: 10
   Exclude:
+    - spec/lib/fintech/**/*_event_subscriber_spec.rb
     - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
-    - spec/lib/fintech/order_commissions/application/create_order_commission_on_order_created_event_subscriber_spec.rb
     - spec/lib/fintech/orders/infrastructure/postgres_order_repository_spec.rb
 
 RSpec/ContextWording:
