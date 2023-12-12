@@ -7,7 +7,9 @@ module Fintech
         sidekiq_options queue: "disbursements", unique: true, retry_for: 3600 # 1 hour
 
         def perform(disbursement_attributes)
-          # TODO
+          Application::CreateDisbursementUseCase.new.create(disbursement_attributes)
+
+          logger.info("Disbursement for merchant #{disbursement_attributes['merchant_id']} successfully created")
         end
       end
     end
