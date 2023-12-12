@@ -22,7 +22,7 @@ module Fintech
               WHERE disbursement_frequency = '#{Domain::MerchantDisbursementFrequencyValueObject::DAILY}'
               OR (
                 disbursement_frequency = '#{Domain::MerchantDisbursementFrequencyValueObject::WEEKLY}' AND
-                DATE_PART('isodow', live_on) = DATE_PART('isodow', DATE '#{Date.today}')
+                DATE_PART('isodow', live_on) = DATE_PART('isodow', DATE('#{Date.today}'))
               )
               GROUP BY disbursement_frequency
             SQL

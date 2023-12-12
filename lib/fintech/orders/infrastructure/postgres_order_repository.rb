@@ -35,7 +35,48 @@ module Fintech
         end
 
         def group(grouping_type, merchant_id)
-          # TODO
+          case grouping_type.downcase
+          when "daily"
+            db[
+              <<~SQL
+                SELECT
+                  DATE(o.created_at) AS start_date,
+                  DATE(o.created_at) AS end_date,
+                  ARRAY_AGG(o.id) AS order_ids,
+                  SUM(o.amount) AS amount,
+                  SUM(oc.amount) as commissions_amount
+                FROM orders o
+                JOIN order_commissions oc
+                ON o.id = oc.order_id
+                WHERE o.merchant_id = '#{merchant_id}'
+                AND o.disbursement_id IS NULL
+                AND DATE(o.created_at) < DATE('#{Date.today}')
+                GROUP BY DATE(o.created_at)
+                ORDER BY start_date ASC;
+              SQL
+            ].all
+          when "weekly"
+            db[
+              <<~SQL
+                SELECT
+                  DATE(DATE_TRUNC('week', o.created_at)) AS start_date,
+                  DATE(DATE_TRUNC('week', o.created_at) + INTERVAL '6 days') AS end_date,
+                  ARRAY_AGG(o.id) AS order_ids,
+                  SUM(o.amount) AS amount,
+                  SUM(oc.amount) as commissions_amount
+                FROM orders o
+                JOIN order_commissions oc
+                ON o.id = oc.order_id
+                WHERE o.merchant_id = '#{merchant_id}'
+                AND o.disbursement_id IS NULL
+                AND DATE_TRUNC('week', o.created_at) < DATE_TRUNC('week', DATE('#{Date.today}'))
+                GROUP BY DATE_TRUNC('week', o.created_at)
+                ORDER BY start_date ASC;
+              SQL
+            ].all
+          else
+            raise Domain::UnsupportedGroupingTypeError, "Supported grouping types: daily, weekly"
+          end
         end
       end
     end
