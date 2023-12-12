@@ -11,6 +11,8 @@ module Fintech
         def create(_attributes); end
 
         def group(_grouping_type, _merchant_id); end
+
+        def bulk_update_disbursed(_ids, _disbursement_id); end
       end
     end
   end
