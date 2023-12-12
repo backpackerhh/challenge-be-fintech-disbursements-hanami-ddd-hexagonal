@@ -8,7 +8,7 @@ module Fintech
 
         def grouped_disbursable_ids; end
 
-        def create(attributes); end
+        def create(_attributes); end
       end
     end
   end

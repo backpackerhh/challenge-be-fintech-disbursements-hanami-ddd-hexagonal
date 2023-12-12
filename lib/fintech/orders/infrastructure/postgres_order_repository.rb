@@ -33,6 +33,10 @@ module Fintech
         rescue Sequel::DatabaseError => e
           logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
+
+        def group(grouping_type, merchant_id)
+          # TODO
+        end
       end
     end
   end
