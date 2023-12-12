@@ -16,7 +16,9 @@ module Fintech
 
         def create(attributes)
           db.transaction do
-            rom.relations[:disbursements].insert(attributes)
+            rom.relations[:disbursements].insert(
+              attributes.merge(order_ids: Sequel.pg_array(attributes[:order_ids], :uuid))
+            )
           end
         rescue Sequel::DatabaseError => e
           logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...

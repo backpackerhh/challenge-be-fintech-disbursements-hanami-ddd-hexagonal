@@ -96,6 +96,7 @@ RSpec/MultipleExpectations:
     - spec/requests/root_spec.rb
     - spec/lib/tasks/fintech/**/*.rb
     - spec/lib/fintech/**/*_event_subscriber_spec.rb
+    - spec/lib/fintech/**/*_repository_spec.rb
     - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
 
 RSpec/MultipleMemoizedHelpers:
