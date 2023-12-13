@@ -15,7 +15,8 @@ RSpec.describe Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob, 
   end
 
   describe "#perform" do
-    it "starts process to generate disbursements", :sidekiq_inline, freeze_time: Time.parse("2023-04-14 07:00 UTC") do
+    it "starts process to generate disbursements",
+       :sidekiq_inline, fake_event_bus: "domain_events.bus", freeze_time: Time.parse("2023-04-14 07:00 UTC") do
       merchant_a = Fintech::Merchants::Domain::MerchantEntityFactory.create(
         :weekly_disbursement,
         live_on: Date.parse("2022-01-06")
