@@ -317,5 +317,37 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
         )
       end
     end
+
+    describe "#bulk_update_disbursed(order_ids, disbursement_id)" do
+      it "logs any error from the database" do
+        repository = described_class.new
+
+        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
+
+        repository.bulk_update_disbursed(["uuid"], "uuid")
+      end
+
+      it "updates disbursement associated to all given orders" do
+        repository = described_class.new
+        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
+        order_a = Fintech::Orders::Domain::OrderEntityFactory.create(
+          merchant_id: merchant.id.value,
+          disbursement_id: nil
+        )
+        order_b = Fintech::Orders::Domain::OrderEntityFactory.create(
+          merchant_id: merchant.id.value,
+          disbursement_id: nil
+        )
+        disbursement = Fintech::Disbursements::Domain::DisbursementEntityFactory.create(
+          merchant_id: merchant.id.value
+        )
+
+        repository.bulk_update_disbursed([order_a.id.value, order_b.id.value], disbursement.id.value)
+
+        disbursement_ids = repository.all.map { |o| o.disbursement_id.value }.uniq
+
+        expect(disbursement_ids).to eq([disbursement.id.value])
+      end
+    end
   end
 end
