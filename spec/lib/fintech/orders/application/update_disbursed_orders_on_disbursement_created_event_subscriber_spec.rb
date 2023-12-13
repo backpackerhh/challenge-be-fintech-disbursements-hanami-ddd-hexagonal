@@ -28,8 +28,9 @@ RSpec.describe Fintech::Orders::Application::UpdateDisbursedOrdersOnDisbursement
 
       event_subscriber.on(disbursement_created_event)
 
-      expect(order_a.disbursement_id.value).to eq(disbursement.id.value)
-      expect(order_b.disbursement_id.value).to eq(disbursement.id.value)
+      disbursement_ids = Fintech::Container["orders.repository"].all.map { |o| o.disbursement_id.value }.uniq
+
+      expect(disbursement_ids).to eq([disbursement.id.value])
     end
   end
 

@@ -9,7 +9,10 @@ module Fintech
         def on(event)
           logger.info("Event #{event.id} successfully received")
 
-          # TODO
+          UpdateDisbursedOrdersUseCase.new.update_disbursed(
+            event.aggregate_attributes.fetch(:order_ids),
+            event.aggregate_id
+          )
         end
 
         def subscribed_to
