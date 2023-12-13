@@ -26,6 +26,10 @@ module Fintech
             raise NotImplementedError, "Define the type for the value object with .value_type class method"
           end
         end
+
+        def ==(other)
+          value == other.value
+        end
       end
     end
   end

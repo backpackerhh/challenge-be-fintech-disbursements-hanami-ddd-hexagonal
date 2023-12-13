@@ -79,8 +79,12 @@ module Fintech
           end
         end
 
-        def bulk_update_disbursed(_order_ids, _disbursement_id)
-          # TODO
+        def bulk_update_disbursed(order_ids, disbursement_id)
+          db.transaction do
+            rom.relations[:orders].where(id: order_ids).update(disbursement_id:)
+          end
+        rescue Sequel::DatabaseError => e
+          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
       end
     end
