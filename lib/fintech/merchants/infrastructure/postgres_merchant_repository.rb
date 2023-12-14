@@ -14,6 +14,18 @@ module Fintech
           merchants.map { |merchant| Domain::MerchantEntity.from_primitives(merchant) }
         end
 
+        def find_by_id(id)
+          merchant = rom.relations[:merchants].by_pk(id).first
+
+          if merchant.nil?
+            raise Domain::MerchantNotFoundError, id
+          end
+
+          Domain::MerchantEntity.from_primitives(merchant)
+        rescue Sequel::DatabaseError => e
+          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
+        end
+
         def grouped_disbursable_ids
           grouped_merchant_ids = db[
             <<~SQL

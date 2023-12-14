@@ -7,5 +7,6 @@ Hanami.app.register_provider :merchants, namespace: true do
 
   start do
     register "list.use_case", Fintech::Merchants::Application::ListMerchantsUseCase.new
+    register "find.use_case", Fintech::Merchants::Application::FindMerchantUseCase.new
   end
 end
