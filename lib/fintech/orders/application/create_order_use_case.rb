@@ -10,8 +10,7 @@ module Fintech
         finder_use_case "merchants.find.use_case"
 
         def create(attributes)
-          attributes.transform_keys!(&:to_sym)
-
+          attributes = attributes.transform_keys(&:to_sym)
           merchant_id = attributes.fetch(:merchant_id)
 
           finder_use_case.find(merchant_id)

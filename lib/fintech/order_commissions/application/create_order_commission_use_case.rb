@@ -10,8 +10,7 @@ module Fintech
         finder_use_case "orders.find.use_case"
 
         def create(attributes)
-          attributes.transform_keys!(&:to_sym)
-
+          attributes = attributes.transform_keys(&:to_sym)
           order_id = attributes.fetch(:order_id)
 
           finder_use_case.find(order_id)
