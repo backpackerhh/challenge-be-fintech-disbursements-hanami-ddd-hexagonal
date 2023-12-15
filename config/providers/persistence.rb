@@ -17,6 +17,7 @@ Hanami.app.register_provider :persistence, namespace: true do
       Fintech::Orders::Infrastructure::OrdersRelation,
       Fintech::Disbursements::Infrastructure::DisbursementsRelation,
       Fintech::OrderCommissions::Infrastructure::OrderCommissionsRelation,
+      Fintech::MonthlyFees::Infrastructure::MonthlyFeesRelation,
     )
 
     register "rom", ROM.container(config)

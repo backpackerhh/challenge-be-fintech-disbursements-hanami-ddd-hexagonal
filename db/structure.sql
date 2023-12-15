@@ -83,6 +83,22 @@ CREATE TABLE public.merchants (
 ALTER TABLE public.merchants OWNER TO postgres;
 
 --
+-- Name: monthly_fees; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.monthly_fees (
+    id uuid NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    commissions_amount numeric(10,2) NOT NULL,
+    month character varying(7) NOT NULL,
+    created_at timestamp without time zone DEFAULT (now() AT TIME ZONE 'utc'::text) NOT NULL,
+    merchant_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.monthly_fees OWNER TO postgres;
+
+--
 -- Name: order_commissions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -157,6 +173,14 @@ ALTER TABLE ONLY public.merchants
 
 
 --
+-- Name: monthly_fees monthly_fees_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monthly_fees
+    ADD CONSTRAINT monthly_fees_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: order_commissions order_commissions_order_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -189,11 +213,26 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: monthly_fees_merchant_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX monthly_fees_merchant_id_index ON public.monthly_fees USING btree (merchant_id);
+
+
+--
 -- Name: disbursements disbursements_merchant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.disbursements
     ADD CONSTRAINT disbursements_merchant_id_fkey FOREIGN KEY (merchant_id) REFERENCES public.merchants(id);
+
+
+--
+-- Name: monthly_fees monthly_fees_merchant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.monthly_fees
+    ADD CONSTRAINT monthly_fees_merchant_id_fkey FOREIGN KEY (merchant_id) REFERENCES public.merchants(id);
 
 
 --
