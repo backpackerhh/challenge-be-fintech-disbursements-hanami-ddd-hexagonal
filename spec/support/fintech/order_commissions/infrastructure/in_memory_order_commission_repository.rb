@@ -9,6 +9,8 @@ module Fintech
         def create(_attributes); end
 
         def exists?(_attributes); end
+
+        def monthly_amount(*); end
       end
     end
   end

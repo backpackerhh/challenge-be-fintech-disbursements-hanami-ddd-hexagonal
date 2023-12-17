@@ -27,6 +27,10 @@ module Fintech
         rescue Sequel::DatabaseError => e
           logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
+
+        def monthly_amount(merchant_id:, beginning_of_month:)
+          # TODO
+        end
       end
     end
   end
