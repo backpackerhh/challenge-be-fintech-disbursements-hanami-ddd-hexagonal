@@ -234,6 +234,27 @@ CREATE INDEX monthly_fees_merchant_id_index ON public.monthly_fees USING btree (
 
 
 --
+-- Name: order_commissions_order_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX order_commissions_order_id_index ON public.order_commissions USING btree (order_id);
+
+
+--
+-- Name: orders_created_at_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_created_at_index ON public.orders USING btree (created_at);
+
+
+--
+-- Name: orders_merchant_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX orders_merchant_id_index ON public.orders USING btree (merchant_id);
+
+
+--
 -- Name: disbursements disbursements_merchant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
