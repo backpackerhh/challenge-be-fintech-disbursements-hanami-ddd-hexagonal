@@ -134,4 +134,59 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
       end
     end
   end
+
+  describe "#monthly_amount(merchant_id:, beginning_of_month:)" do
+    it "returns 0.0 for a merchant without any orders" do
+      repository = described_class.new
+
+      result = repository.monthly_amount(merchant_id: SecureRandom.uuid, beginning_of_month: Date.today)
+
+      expect(result).to eq(0.0)
+    end
+
+    it "returns the commissions amount in the month for a merchant" do
+      repository = described_class.new
+      merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
+      march_order = Fintech::Orders::Domain::OrderEntityFactory.create(
+        merchant_id: merchant.id.value,
+        created_at: Time.parse("2023-03-31")
+      )
+      Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+        order_id: march_order.id.value,
+        order_amount: march_order.amount.value,
+        amount: BigDecimal("0.45")
+      )
+      april_order_a = Fintech::Orders::Domain::OrderEntityFactory.create(
+        merchant_id: merchant.id.value,
+        created_at: Time.parse("2023-04-01")
+      )
+      Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+        order_id: april_order_a.id.value,
+        order_amount: april_order_a.amount.value,
+        amount: BigDecimal("1.35")
+      )
+      april_order_b = Fintech::Orders::Domain::OrderEntityFactory.create(
+        merchant_id: merchant.id.value,
+        created_at: Time.parse("2023-04-30")
+      )
+      Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+        order_id: april_order_b.id.value,
+        order_amount: april_order_b.amount.value,
+        amount: BigDecimal("2.31")
+      )
+      may_order = Fintech::Orders::Domain::OrderEntityFactory.create(
+        merchant_id: merchant.id.value,
+        created_at: Time.parse("2023-05-01")
+      )
+      Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
+        order_id: may_order.id.value,
+        order_amount: may_order.amount.value,
+        amount: BigDecimal("0.08")
+      )
+
+      result = repository.monthly_amount(merchant_id: merchant.id.value, beginning_of_month: Date.parse("2023-04-01"))
+
+      expect(result).to eq(3.66)
+    end
+  end
 end

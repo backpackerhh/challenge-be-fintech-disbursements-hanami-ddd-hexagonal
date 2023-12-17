@@ -29,7 +29,19 @@ module Fintech
         end
 
         def monthly_amount(merchant_id:, beginning_of_month:)
-          # TODO
+          result = db[
+            <<~SQL
+              SELECT SUM(oc.amount) AS monthly_amount
+              FROM order_commissions oc
+              JOIN orders o
+              ON o.id = oc.order_id
+              WHERE o.merchant_id = '#{merchant_id}'
+              AND DATE(o.created_at) >= DATE('#{beginning_of_month}')
+              AND DATE(o.created_at) < (DATE('#{beginning_of_month}') + INTERVAL '1 month')
+            SQL
+          ]
+
+          result.to_a[0][:monthly_amount] || 0.0
         end
       end
     end

@@ -114,6 +114,7 @@ RSpec/ExampleLength:
     - spec/lib/fintech/**/*_event_subscriber_spec.rb
     - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
     - spec/lib/fintech/orders/infrastructure/postgres_order_repository_spec.rb
+    - spec/lib/fintech/order_commissions/infrastructure/postgres_order_commission_repository_spec.rb
 
 RSpec/ContextWording:
   Enabled: true
