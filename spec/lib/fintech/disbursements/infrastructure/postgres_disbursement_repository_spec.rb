@@ -71,4 +71,56 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
       end
     end
   end
+
+  describe "#first_in_month_for_merchant?(merchant_id:, start_date:)" do
+    it "logs any error from the database" do
+      repository = described_class.new
+
+      expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
+
+      repository.first_in_month_for_merchant?(merchant_id: "invalid uuid", start_date: Date.today)
+    end
+
+    context "when there is more than one result for given merchant" do
+      it "returns false", freeze_time: Time.parse("2023-04-01 07:00 UTC") do
+        repository = described_class.new
+        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
+        Fintech::Disbursements::Domain::DisbursementEntityFactory.create(
+          merchant_id: merchant.id.value,
+          start_date: Date.parse("2023-02-01"),
+          end_date: Date.parse("2023-02-01"),
+          created_at: Time.parse("2023-04-01 07:00 UTC")
+        )
+        Fintech::Disbursements::Domain::DisbursementEntityFactory.create(
+          merchant_id: merchant.id.value,
+          start_date: Date.parse("2023-02-08"),
+          end_date: Date.parse("2023-02-08"),
+          created_at: Time.parse("2023-04-01 07:00 UTC")
+        )
+
+        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value,
+                                                         start_date: Date.parse("2023-02-11"))
+
+        expect(result).to be false
+      end
+    end
+
+    context "when there is exactly one result for given merchant" do
+      it "returns true", freeze_time: Time.parse("2023-04-01 07:00 UTC") do
+        repository = described_class.new
+        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
+        Fintech::Disbursements::Domain::DisbursementEntityFactory.create(
+          merchant_id: merchant.id.value,
+          start_date: Date.parse("2023-02-01"),
+          end_date: Date.parse("2023-02-01"),
+          created_at: Time.parse("2023-04-01 07:00 UTC")
+        )
+
+        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value,
+                                                         start_date: Date.parse("2023-02-11"))
+
+        expect(result).to be true
+      end
+    end
+  end
 end
