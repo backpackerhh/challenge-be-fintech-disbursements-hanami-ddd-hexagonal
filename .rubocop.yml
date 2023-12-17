@@ -73,6 +73,7 @@ Metrics/AbcSize:
     - lib/fintech/disbursements/application/create_disbursement_use_case.rb
     - lib/fintech/orders/infrastructure/import_orders_job.rb
     - lib/fintech/order_commissions/application/create_order_commission_use_case.rb
+    - lib/fintech/monthly_fees/infrastructure/create_monthly_fee_job.rb
 
 # Lint
 
