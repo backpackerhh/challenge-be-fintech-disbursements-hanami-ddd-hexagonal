@@ -213,6 +213,20 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: disbursements_merchant_id_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX disbursements_merchant_id_index ON public.disbursements USING btree (merchant_id);
+
+
+--
+-- Name: disbursements_start_date_end_date_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX disbursements_start_date_end_date_index ON public.disbursements USING btree (start_date, end_date);
+
+
+--
 -- Name: monthly_fees_merchant_id_index; Type: INDEX; Schema: public; Owner: postgres
 --
 
