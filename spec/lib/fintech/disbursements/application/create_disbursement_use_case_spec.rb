@@ -20,6 +20,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         "created_at" => "2023-02-01"
       }
     end
+    let(:callback) { -> { 1 + 1 } }
 
     it "raises an exception when merchant is not found" do
       allow(finder_use_case).to receive(:find).and_raise(Fintech::Merchants::Domain::MerchantNotFoundError)
@@ -27,7 +28,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
       expect do
-        use_case.create(attributes)
+        use_case.create(attributes, callback:)
       end.to raise_error(Fintech::Merchants::Domain::MerchantNotFoundError)
     end
 
@@ -49,7 +50,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
           }
         )
 
-        use_case.create(attributes)
+        use_case.create(attributes, callback:)
       end
 
       it "publishes event about disbursement created" do
@@ -68,7 +69,29 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
           )
         )
 
-        use_case.create(attributes)
+        use_case.create(attributes, callback:)
+      end
+
+      it "calls given callback when disbursement is the first one in the month for the merchant" do
+        allow(repository).to receive(:first_in_month_for_merchant?)
+          .with(merchant_id: attributes["merchant_id"], start_date: Date.parse(attributes["start_date"])) { true }
+
+        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+
+        expect(callback).to receive(:call)
+
+        use_case.create(attributes, callback:)
+      end
+
+      it "does not call given callback when disbursement is not the first one in the month for the merchant" do
+        allow(repository).to receive(:first_in_month_for_merchant?)
+          .with(merchant_id: attributes["merchant_id"], start_date: Date.parse(attributes["start_date"])) { false }
+
+        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+
+        expect(callback).not_to receive(:call)
+
+        use_case.create(attributes, callback:)
       end
     end
 
@@ -77,7 +100,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("id" => "uuid"))
+          use_case.create(attributes.merge("id" => "uuid"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+uuid_v4.+failed/)
       end
 
@@ -85,7 +108,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("merchant_id" => "uuid"))
+          use_case.create(attributes.merge("merchant_id" => "uuid"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+uuid_v4.+failed/)
       end
 
@@ -93,7 +116,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("amount" => "free"))
+          use_case.create(attributes.merge("amount" => "free"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+coerced to decimal.+failed/)
       end
 
@@ -101,7 +124,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("commissions_amount" => "free"))
+          use_case.create(attributes.merge("commissions_amount" => "free"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+coerced to decimal.+failed/)
       end
 
@@ -109,7 +132,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("order_ids" => [1, 2]))
+          use_case.create(attributes.merge("order_ids" => [1, 2]), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /Array.+invalid type.+uuid_v4.+failed/)
       end
 
@@ -117,7 +140,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("start_date" => "yesterday"))
+          use_case.create(attributes.merge("start_date" => "yesterday"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+date failed/)
       end
 
@@ -125,7 +148,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("end_date" => "yesterday"))
+          use_case.create(attributes.merge("end_date" => "yesterday"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+date failed/)
       end
 
@@ -133,7 +156,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
         expect do
-          use_case.create(attributes.merge("created_at" => "yesterday"))
+          use_case.create(attributes.merge("created_at" => "yesterday"), callback:)
         end.to raise_error(Fintech::Shared::Domain::InvalidArgumentError, /invalid type.+time.+failed/)
       end
     end

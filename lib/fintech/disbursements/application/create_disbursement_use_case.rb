@@ -9,7 +9,7 @@ module Fintech
         event_bus
         finder_use_case "merchants.find.use_case"
 
-        def create(attributes)
+        def create(attributes, callback:)
           attributes = attributes.transform_keys(&:to_sym)
           merchant_id = attributes.fetch(:merchant_id)
 
@@ -22,6 +22,10 @@ module Fintech
           logger.info("Disbursement #{disbursement.id.value} successfully created for merchant #{merchant_id}")
 
           event_bus.publish(Domain::DisbursementCreatedEvent.from(disbursement))
+
+          if repository.first_in_month_for_merchant?(merchant_id:, start_date: disbursement.start_date.value)
+            callback.call
+          end
         end
       end
     end

@@ -26,6 +26,7 @@ Style/GuardClause:
   Exclude:
     - lib/fintech/shared/application/use_case.rb
     - lib/fintech/shared/domain/*value_object.rb
+    - lib/fintech/disbursements/application/create_disbursement_use_case.rb
 
 Style/ArgumentsForwarding:
   Enabled: true
@@ -69,6 +70,7 @@ Metrics/AbcSize:
   CountRepeatedAttributes: false
   Exclude:
     - lib/fintech/disbursements/domain/disbursement_entity.rb
+    - lib/fintech/disbursements/application/create_disbursement_use_case.rb
     - lib/fintech/orders/infrastructure/import_orders_job.rb
     - lib/fintech/order_commissions/application/create_order_commission_use_case.rb
 
