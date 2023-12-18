@@ -14,5 +14,14 @@ db-generate-dump:
 	@echo "DB dump generated"
 
 db-restore:
-	@docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) < db/dump.sql
+	for table in $$(docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) -Atc "SELECT tablename FROM pg_tables WHERE schemaname = 'public';"); do \
+		docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) -c "ALTER TABLE $$table DISABLE TRIGGER ALL;"; \
+	done
+
+	docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) < db/dump.sql
+
+	for table in $$(docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) -Atc "SELECT tablename FROM pg_tables WHERE schemaname = 'public';"); do \
+		docker compose exec -T db psql -U $(DB_USER) -d $(DB_NAME) -c "ALTER TABLE $$table ENABLE TRIGGER ALL;"; \
+	done
+
 	@echo "DB restored"
