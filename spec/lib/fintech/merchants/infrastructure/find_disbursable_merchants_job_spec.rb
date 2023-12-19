@@ -235,19 +235,19 @@ RSpec.describe Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob, 
         created_at: Time.parse("2023-03-31 16:24:13")
       )
 
-      # Merchant E - 2 ok to be disbursed, 1 discarded from this week - 1 monthly fee ok to be created
+      # Merchant E - 2 ok to be disbursed, 1 discarded from this week - No monthly fee
 
       merchant_e_order_1 = Fintech::Orders::Domain::OrderEntityFactory.create(
         merchant_id: merchant_e.id.value,
         disbursement_id: nil,
         amount: BigDecimal("54.99"),
-        created_at: Time.parse("2023-03-25 07:54:03")
+        created_at: Time.parse("2023-03-26 07:54:03")
       )
       Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
         order_id: merchant_e_order_1.id.value,
         order_amount: merchant_e_order_1.amount.value,
         amount: BigDecimal("0.53"),
-        created_at: Time.parse("2023-03-25 07:55:13")
+        created_at: Time.parse("2023-03-26 07:55:13")
       )
       merchant_e_order_2 = Fintech::Orders::Domain::OrderEntityFactory.create(
         merchant_id: merchant_e.id.value,
@@ -343,12 +343,6 @@ RSpec.describe Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob, 
           BigDecimal("27.27"),
           BigDecimal("2.73"),
           "2023-03",
-        ],
-        [
-          merchant_e.id.value,
-          BigDecimal("15.00"),
-          BigDecimal("0.00"),
-          "2023-02",
         ]
       )
     end

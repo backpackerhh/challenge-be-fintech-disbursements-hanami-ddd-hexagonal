@@ -18,7 +18,7 @@ module Fintech
             date: previous_month_date
           )
 
-          if merchant.minimum_monthly_fee.value > commissions_amount
+          if merchant.monthly_fee_applicable?(commissions_amount:, previous_month_date:)
             Application::CreateMonthlyFeeUseCase.new.create(
               merchant_id:,
               commissions_amount:,
