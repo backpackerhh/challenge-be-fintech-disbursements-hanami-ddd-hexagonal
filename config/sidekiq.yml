@@ -1,17 +1,18 @@
 ---
-:concurrency: 5
+:concurrency: 10
 staging:
-  :concurrency: 10
+  :concurrency: 20
 production:
-  :concurrency: 10
+  :concurrency: 30
 :queues:
-  - [domain_events, 2]
-  - [disbursements, 2]
+  - [domain_events, 3]
+  - [disbursements, 3]
+  - [monthly_fees, 2]
   - [import_data, 2]
   - default
 :scheduler:
   :schedule:
     generate_disbursements:
-      description: 'Start process to generate disbursements'
+      description: 'Start process to generate disbursements and monthly fees'
       cron: '0 0 7 * * * UTC' # Every day at 07:00:00 UTC
       class: Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob

@@ -4,7 +4,7 @@ module Fintech
   module MonthlyFees
     module Infrastructure
       class CreateMonthlyFeeJob < Shared::Infrastructure::Job
-        sidekiq_options queue: "disbursements", unique: true, retry_for: 3600 # 1 hour
+        sidekiq_options queue: "monthly_fees", unique: true, retry_for: 3600 # 1 hour
 
         include Deps[find_merchant_use_case: "merchants.find.use_case",
                      find_monthly_order_commissions_use_case: "order_commissions.find_monthly.use_case"]

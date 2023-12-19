@@ -6,7 +6,7 @@ RSpec.describe Fintech::MonthlyFees::Infrastructure::CreateMonthlyFeeJob, type: 
   it "has expected configuration" do
     expect(described_class.sidekiq_options.transform_keys(&:to_sym)).to eq(
       {
-        queue: "disbursements",
+        queue: "monthly_fees",
         unique: true,
         retry: true,
         retry_for: 3600
