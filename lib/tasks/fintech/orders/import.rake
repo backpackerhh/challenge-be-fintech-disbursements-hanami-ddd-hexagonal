@@ -4,7 +4,7 @@ require_relative "../task_helpers"
 
 namespace :fintech do
   namespace :orders do
-    desc "Import orders from given file path (parameters: FILE_PATH)"
+    desc "[OTT] Import orders from given file path (parameters: FILE_PATH)"
     task :import, [:file_path] => [:environment] do |_t, args|
       example_usage = "rake fintech:orders:import[<file_path>]"
 
