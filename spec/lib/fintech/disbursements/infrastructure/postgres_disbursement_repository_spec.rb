@@ -72,13 +72,13 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
     end
   end
 
-  describe "#first_in_month_for_merchant?(merchant_id:, start_date:)" do
+  describe "#first_in_month_for_merchant?(merchant_id:, date:)" do
     it "logs any error from the database" do
       repository = described_class.new
 
       expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
 
-      repository.first_in_month_for_merchant?(merchant_id: "invalid uuid", start_date: Date.today)
+      repository.first_in_month_for_merchant?(merchant_id: "invalid uuid", date: Date.today)
     end
 
     context "when there is more than one result for given merchant" do
@@ -98,8 +98,7 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
           created_at: Time.parse("2023-04-01 07:00 UTC")
         )
 
-        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value,
-                                                         start_date: Date.parse("2023-02-11"))
+        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value, date: Date.parse("2023-02-11"))
 
         expect(result).to be false
       end
@@ -116,8 +115,7 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
           created_at: Time.parse("2023-04-01 07:00 UTC")
         )
 
-        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value,
-                                                         start_date: Date.parse("2023-02-11"))
+        result = repository.first_in_month_for_merchant?(merchant_id: merchant.id.value, date: Date.parse("2023-02-11"))
 
         expect(result).to be true
       end

@@ -24,14 +24,14 @@ module Fintech
           logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
 
-        def first_in_month_for_merchant?(merchant_id:, start_date:)
+        def first_in_month_for_merchant?(merchant_id:, date:)
           result = db[
             <<~SQL
               SELECT COUNT(*)
               FROM disbursements
               WHERE merchant_id = '#{merchant_id}'
-              AND start_date >= DATE_TRUNC('month', DATE('#{start_date}'))
-              AND end_date < (DATE_TRUNC('month', DATE('#{start_date}')) + INTERVAL '1 month')
+              AND start_date >= DATE_TRUNC('month', DATE('#{date}'))
+              AND end_date < (DATE_TRUNC('month', DATE('#{date}')) + INTERVAL '1 month')
             SQL
           ]
 

@@ -74,7 +74,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
 
       it "calls given callback when disbursement is the first one in the month for the merchant" do
         allow(repository).to receive(:first_in_month_for_merchant?)
-          .with(merchant_id: attributes["merchant_id"], start_date: Date.parse(attributes["start_date"])) { true }
+          .with(merchant_id: attributes["merchant_id"], date: Date.parse(attributes["start_date"])) { true }
 
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 
@@ -85,7 +85,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
 
       it "does not call given callback when disbursement is not the first one in the month for the merchant" do
         allow(repository).to receive(:first_in_month_for_merchant?)
-          .with(merchant_id: attributes["merchant_id"], start_date: Date.parse(attributes["start_date"])) { false }
+          .with(merchant_id: attributes["merchant_id"], date: Date.parse(attributes["start_date"])) { false }
 
         use_case = described_class.new(repository:, event_bus:, finder_use_case:)
 

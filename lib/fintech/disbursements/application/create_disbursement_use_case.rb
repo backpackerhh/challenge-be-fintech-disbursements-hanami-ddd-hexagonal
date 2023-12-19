@@ -23,7 +23,7 @@ module Fintech
 
           event_bus.publish(Domain::DisbursementCreatedEvent.from(disbursement))
 
-          if repository.first_in_month_for_merchant?(merchant_id:, start_date: disbursement.start_date.value)
+          if repository.first_in_month_for_merchant?(merchant_id:, date: disbursement.start_date.value)
             callback.call
           end
         end
