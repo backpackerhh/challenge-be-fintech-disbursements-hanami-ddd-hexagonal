@@ -7,12 +7,10 @@ module Fintech
         repository "order_commissions.repository", Domain::OrderCommissionRepository::Interface
         logger
 
-        def sum_monthly_amount(merchant_id:, beginning_of_month:)
-          monthly_amount = repository.monthly_amount(merchant_id:, beginning_of_month:)
+        def sum_monthly_amount(merchant_id:, date:)
+          monthly_amount = repository.monthly_amount(merchant_id:, date:)
 
-          logger.info(
-            "Monthly order commissions for merchant #{merchant_id} successfully retrieved (#{beginning_of_month})"
-          )
+          logger.info("Monthly order commissions for merchant #{merchant_id} successfully retrieved (#{date})")
 
           monthly_amount
         end

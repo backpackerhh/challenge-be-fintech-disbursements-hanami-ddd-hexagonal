@@ -135,11 +135,11 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
     end
   end
 
-  describe "#monthly_amount(merchant_id:, beginning_of_month:)" do
+  describe "#monthly_amount(merchant_id:, date:)" do
     it "returns 0.0 for a merchant without any orders" do
       repository = described_class.new
 
-      result = repository.monthly_amount(merchant_id: SecureRandom.uuid, beginning_of_month: Date.today)
+      result = repository.monthly_amount(merchant_id: SecureRandom.uuid, date: Date.today)
 
       expect(result).to eq(0.0)
     end
@@ -184,7 +184,7 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
         amount: BigDecimal("0.08")
       )
 
-      result = repository.monthly_amount(merchant_id: merchant.id.value, beginning_of_month: Date.parse("2023-04-01"))
+      result = repository.monthly_amount(merchant_id: merchant.id.value, date: Date.parse("2023-04-01"))
 
       expect(result).to eq(3.66)
     end

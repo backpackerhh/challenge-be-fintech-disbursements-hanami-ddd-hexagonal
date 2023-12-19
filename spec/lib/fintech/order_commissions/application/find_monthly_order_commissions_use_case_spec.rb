@@ -3,17 +3,17 @@
 require "spec_helper"
 
 RSpec.describe Fintech::OrderCommissions::Application::FindMonthlyOrderCommissionsUseCase, type: :use_case do
-  describe "#sum_monthly_amount(merchant_id:, beginning_of_month:)" do
+  describe "#sum_monthly_amount(merchant_id:, date:)" do
     let(:repository) { Fintech::OrderCommissions::Infrastructure::InMemoryOrderCommissionRepository.new }
 
     it "returns grouped disbursable merchants" do
       use_case = described_class.new(repository:)
       merchant_id = SecureRandom.uuid
-      beginning_of_month = Date.parse("2023-04-02")
+      date = Date.parse("2023-04-02")
 
-      allow(repository).to receive(:monthly_amount).with(merchant_id:, beginning_of_month:) { 123.45 }
+      allow(repository).to receive(:monthly_amount).with(merchant_id:, date:) { 123.45 }
 
-      result = use_case.sum_monthly_amount(merchant_id:, beginning_of_month:)
+      result = use_case.sum_monthly_amount(merchant_id:, date:)
 
       expect(result).to eq(123.45)
     end

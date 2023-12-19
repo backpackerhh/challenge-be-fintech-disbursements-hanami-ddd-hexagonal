@@ -11,11 +11,11 @@ module Fintech
 
         def perform(merchant_id, start_date)
           merchant = find_merchant_use_case.find(merchant_id)
-          previous_month = Date.parse(start_date).prev_month
-          formatted_previous_month = previous_month.strftime("%Y-%m")
+          previous_month_date = Date.parse(start_date).prev_month
+          formatted_previous_month = previous_month_date.strftime("%Y-%m")
           commissions_amount = find_monthly_order_commissions_use_case.sum_monthly_amount(
             merchant_id:,
-            beginning_of_month: Date.new(previous_month.year, previous_month.month, 1)
+            date: previous_month_date
           )
 
           if merchant.minimum_monthly_fee.value > commissions_amount

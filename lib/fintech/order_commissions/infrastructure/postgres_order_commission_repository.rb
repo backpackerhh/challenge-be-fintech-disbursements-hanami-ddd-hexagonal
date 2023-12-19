@@ -28,7 +28,7 @@ module Fintech
           logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
 
-        def monthly_amount(merchant_id:, beginning_of_month:)
+        def monthly_amount(merchant_id:, date:)
           result = db[
             <<~SQL
               SELECT SUM(oc.amount) AS monthly_amount
@@ -36,8 +36,8 @@ module Fintech
               JOIN orders o
               ON o.id = oc.order_id
               WHERE o.merchant_id = '#{merchant_id}'
-              AND DATE(o.created_at) >= DATE('#{beginning_of_month}')
-              AND DATE(o.created_at) < (DATE('#{beginning_of_month}') + INTERVAL '1 month')
+              AND DATE(o.created_at) >= DATE_TRUNC('month', DATE('#{date}'))
+              AND DATE(o.created_at) < (DATE_TRUNC('month', DATE('#{date}')) + INTERVAL '1 month')
             SQL
           ]
 
