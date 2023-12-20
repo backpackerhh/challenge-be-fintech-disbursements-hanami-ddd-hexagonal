@@ -55,28 +55,13 @@ RSpec.describe Fintech::Merchants::Infrastructure::PostgresMerchantRepository, t
 
   describe "#create(attributes)" do
     context "with errors" do
-      it "does not create a new merchant" do
+      it "raises an exception" do
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
 
-        merchants = repository.all
-
-        expect(merchants.size).to eq(1)
-
-        repository.create(merchant.to_primitives)
-
-        merchants = repository.all
-
-        expect(merchants.size).to eq(1)
-      end
-
-      it "logs any error from the database" do
-        repository = described_class.new
-        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
-
-        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-        repository.create(merchant.to_primitives)
+        expect do
+          repository.create(merchant.to_primitives)
+        end.to raise_error(Fintech::Shared::Infrastructure::DatabaseError)
       end
     end
 

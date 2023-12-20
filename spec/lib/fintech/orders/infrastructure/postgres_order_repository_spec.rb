@@ -26,30 +26,14 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
 
   describe "#create(attributes)" do
     context "with errors" do
-      it "does not create a new order" do
+      it "raises an exception" do
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
         order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
 
-        orders = repository.all
-
-        expect(orders.size).to eq(1)
-
-        repository.create(order.to_primitives)
-
-        orders = repository.all
-
-        expect(orders.size).to eq(1)
-      end
-
-      it "logs any error from the database" do
-        repository = described_class.new
-        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
-        order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
-
-        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-        repository.create(order.to_primitives)
+        expect do
+          repository.create(order.to_primitives)
+        end.to raise_error(Fintech::Shared::Infrastructure::DatabaseError)
       end
     end
 
@@ -73,14 +57,6 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
   end
 
   describe "#find_by_id(id)" do
-    it "logs any error from the database" do
-      repository = described_class.new
-
-      expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-      repository.find_by_id("uuid")
-    end
-
     context "when given order does not exist" do
       it "raises an exception" do
         repository = described_class.new
@@ -317,16 +293,20 @@ RSpec.describe Fintech::Orders::Infrastructure::PostgresOrderRepository, type: %
         )
       end
     end
+  end
 
-    describe "#bulk_update_disbursed(order_ids, disbursement_id)" do
-      it "logs any error from the database" do
+  describe "#bulk_update_disbursed(order_ids, disbursement_id)" do
+    context "with errors" do
+      it "raises an exception" do
         repository = described_class.new
 
-        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-        repository.bulk_update_disbursed(["uuid"], "uuid")
+        expect do
+          repository.bulk_update_disbursed(["uuid"], "uuid")
+        end.to raise_error(Fintech::Shared::Infrastructure::DatabaseError)
       end
+    end
 
+    context "without errors" do
       it "updates disbursement associated to all given orders" do
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create

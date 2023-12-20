@@ -56,10 +56,11 @@ Metrics/ParameterLists:
 
 Metrics/MethodLength:
   Enabled: true
+  CountAsOne: ["array", "hash", "method_call", "heredoc"]
   Exclude:
     - lib/tasks/fintech/task_helpers.rb
     - lib/fintech/orders/infrastructure/import_orders_job.rb
-  CountAsOne: ["array", "hash", "method_call", "heredoc"]
+    - lib/fintech/shared/infrastructure/database_exception_handler.rb
 
 Metrics/BlockLength:
   Enabled: true

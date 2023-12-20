@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require "rom-sql"
-
 module Fintech
   module MonthlyFees
     module Infrastructure
-      class PostgresMonthlyFeeRepository
-        include Deps["persistence.rom", "persistence.db", "logger"]
-
+      class PostgresMonthlyFeeRepository < Shared::Infrastructure::PostgresRepository
         def all
           monthly_fees = rom.relations[:monthly_fees].to_a
 
@@ -18,8 +14,6 @@ module Fintech
           db.transaction do
             rom.relations[:monthly_fees].insert(attributes)
           end
-        rescue Sequel::DatabaseError => e
-          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
       end
     end

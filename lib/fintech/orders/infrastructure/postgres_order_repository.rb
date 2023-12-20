@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require "rom-sql"
-
 module Fintech
   module Orders
     module Infrastructure
-      class PostgresOrderRepository
-        include Deps["persistence.rom", "persistence.db", "logger"]
-
+      class PostgresOrderRepository < Shared::Infrastructure::PostgresRepository
         def all
           orders = rom.relations[:orders].to_a
 
@@ -18,8 +14,6 @@ module Fintech
           db.transaction do
             rom.relations[:orders].insert(attributes)
           end
-        rescue Sequel::DatabaseError => e
-          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
 
         def find_by_id(id)
@@ -30,8 +24,6 @@ module Fintech
           end
 
           Domain::OrderEntity.from_primitives(order)
-        rescue Sequel::DatabaseError => e
-          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
 
         def group(grouping_type, merchant_id)
@@ -83,8 +75,6 @@ module Fintech
           db.transaction do
             rom.relations[:orders].where(id: order_ids).update(disbursement_id:)
           end
-        rescue Sequel::DatabaseError => e
-          logger.error(e) # maybe re-raise exception, register in Honeybadger or similar platform...
         end
       end
     end

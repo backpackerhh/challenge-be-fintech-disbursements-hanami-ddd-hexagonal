@@ -35,7 +35,7 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
 
   describe "#create(attributes)" do
     context "with errors" do
-      it "does not create a new order commission" do
+      it "raises an exception" do
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
         order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
@@ -44,29 +44,9 @@ RSpec.describe Fintech::OrderCommissions::Infrastructure::PostgresOrderCommissio
           order_amount: order.amount.value
         )
 
-        order_commissions = repository.all
-
-        expect(order_commissions.size).to eq(1)
-
-        repository.create(order_commission.to_primitives)
-
-        order_commissions = repository.all
-
-        expect(order_commissions.size).to eq(1)
-      end
-
-      it "logs any error from the database" do
-        repository = described_class.new
-        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
-        order = Fintech::Orders::Domain::OrderEntityFactory.create(merchant_id: merchant.id.value)
-        order_commission = Fintech::OrderCommissions::Domain::OrderCommissionEntityFactory.create(
-          order_id: order.id.value,
-          order_amount: order.amount.value
-        )
-
-        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-        repository.create(order_commission.to_primitives)
+        expect do
+          repository.create(order_commission.to_primitives)
+        end.to raise_error(Fintech::Shared::Infrastructure::DatabaseError)
       end
     end
 

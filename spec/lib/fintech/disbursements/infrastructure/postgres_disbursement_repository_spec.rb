@@ -26,30 +26,14 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
 
   describe "#create(attributes)" do
     context "with errors" do
-      it "does not create a new disbursement" do
+      it "raises an exception" do
         repository = described_class.new
         merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
         disbursement = Fintech::Disbursements::Domain::DisbursementEntityFactory.create(merchant_id: merchant.id.value)
 
-        disbursements = repository.all
-
-        expect(disbursements.size).to eq(1)
-
-        repository.create(disbursement.to_primitives)
-
-        disbursements = repository.all
-
-        expect(disbursements.size).to eq(1)
-      end
-
-      it "logs any error from the database" do
-        repository = described_class.new
-        merchant = Fintech::Merchants::Domain::MerchantEntityFactory.create
-        disbursement = Fintech::Disbursements::Domain::DisbursementEntityFactory.create(merchant_id: merchant.id.value)
-
-        expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-        repository.create(disbursement.to_primitives)
+        expect do
+          repository.create(disbursement.to_primitives)
+        end.to raise_error(Fintech::Shared::Infrastructure::DatabaseError)
       end
     end
 
@@ -73,14 +57,6 @@ RSpec.describe Fintech::Disbursements::Infrastructure::PostgresDisbursementRepos
   end
 
   describe "#first_in_month_for_merchant?(merchant_id:, date:)" do
-    it "logs any error from the database" do
-      repository = described_class.new
-
-      expect(repository.logger).to receive(:error).with(kind_of(Sequel::DatabaseError))
-
-      repository.first_in_month_for_merchant?(merchant_id: "invalid uuid", date: Date.today)
-    end
-
     context "when there is more than one result for given merchant" do
       it "returns false", freeze_time: Time.parse("2023-04-01 07:00 UTC") do
         repository = described_class.new
