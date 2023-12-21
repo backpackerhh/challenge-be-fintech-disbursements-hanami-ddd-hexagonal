@@ -10,10 +10,7 @@ services:
       - .env.${ENV:-development}
 
   app:
-    image: challenge-be-fintech-disbursements
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    image: backpackerhh/challenge-be-fintech-ruby:0.1.0
     stdin_open: true
     volumes:
       - .:/usr/app
@@ -28,7 +25,7 @@ services:
       - redis-data:/data
 
   sidekiq:
-    image: challenge-be-fintech-disbursements
+    image: backpackerhh/challenge-be-fintech-ruby:0.1.0
     restart: unless-stopped
     command: bundle exec sidekiq -r ./config/sidekiq.rb
     volumes:

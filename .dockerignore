@@ -1,0 +1,7 @@
+ANALYSIS.md
+README.md
+app
+db/data
+db/dump.sql
+log
+.ruby-gemset
