@@ -46,6 +46,9 @@ db-import-data:
 db-generate-data:
 	@docker compose exec app rake fintech:generate_data
 
+db-generate-yearly-report:
+	@docker compose exec app rake fintech:generate_yearly_report
+
 start:
 	@docker compose up --build -d $(SERVICES)
 
