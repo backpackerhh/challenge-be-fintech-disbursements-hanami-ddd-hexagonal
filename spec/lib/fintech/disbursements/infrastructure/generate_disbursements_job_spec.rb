@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Fintech::Merchants::Infrastructure::FindDisbursableMerchantsJob, type: %i[job database] do
+RSpec.describe Fintech::Disbursements::Infrastructure::GenerateDisbursementsJob, type: %i[job database] do
   it "has expected configuration" do
     expect(described_class.sidekiq_options.transform_keys(&:to_sym)).to eq(
       {

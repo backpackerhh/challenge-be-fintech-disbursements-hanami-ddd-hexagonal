@@ -81,7 +81,7 @@ Metrics/AbcSize:
 Lint/UselessAssignment:
   Enabled: true
   Exclude:
-    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/disbursements/infrastructure/generate_disbursements_job_spec.rb
     - spec/lib/fintech/merchants/infrastructure/postgres_merchant_repository_spec.rb
 
 # Naming
@@ -89,7 +89,7 @@ Lint/UselessAssignment:
 Naming/VariableNumber:
   Enabled: true
   Exclude:
-    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/disbursements/infrastructure/generate_disbursements_job_spec.rb
     - spec/lib/fintech/orders/infrastructure/postgres_order_repository_spec.rb
 
 # Tests
@@ -101,7 +101,7 @@ RSpec/MultipleExpectations:
     - spec/lib/tasks/fintech/**/*.rb
     - spec/lib/fintech/**/*_event_subscriber_spec.rb
     - spec/lib/fintech/**/*_repository_spec.rb
-    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/disbursements/infrastructure/generate_disbursements_job_spec.rb
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: true
@@ -114,7 +114,7 @@ RSpec/ExampleLength:
   Max: 10
   Exclude:
     - spec/lib/fintech/**/*_event_subscriber_spec.rb
-    - spec/lib/fintech/merchants/infrastructure/find_disbursable_merchants_job_spec.rb
+    - spec/lib/fintech/disbursements/infrastructure/generate_disbursements_job_spec.rb
     - spec/lib/fintech/orders/infrastructure/postgres_order_repository_spec.rb
     - spec/lib/fintech/order_commissions/infrastructure/postgres_order_commission_repository_spec.rb
 
