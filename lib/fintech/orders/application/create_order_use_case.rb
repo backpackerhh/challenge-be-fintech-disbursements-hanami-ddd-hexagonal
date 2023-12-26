@@ -7,13 +7,13 @@ module Fintech
         repository "orders.repository", Domain::OrderRepository::Interface
         logger
         event_bus "domain_events.async_bus"
-        finder_use_case "merchants.find.use_case"
+        finder_service "merchants.find.service"
 
         def create(attributes)
           attributes = attributes.transform_keys(&:to_sym)
           merchant_id = attributes.fetch(:merchant_id)
 
-          finder_use_case.find(merchant_id)
+          finder_service.find(merchant_id)
 
           order = Domain::OrderEntity.from_primitives(attributes)
 

@@ -8,7 +8,7 @@ module Fintech
       class ImportOrdersJob < Shared::Infrastructure::Job
         sidekiq_options queue: "import_data", unique: true, retry_for: 3600 # 1 hour
 
-        include Deps[list_merchants_use_case: "merchants.list.use_case"]
+        include Deps[list_merchants_service: "merchants.list.service"]
 
         def perform(file_path)
           options = { chunk_size: Hanami.app.settings.import_orders_chunk_size, headers_in_file: true, col_sep: ";" }
@@ -33,7 +33,7 @@ module Fintech
 
         def merchants_dictionary
           @merchants_dictionary ||= begin
-            merchants = list_merchants_use_case.retrieve_all
+            merchants = list_merchants_service.retrieve_all
 
             merchants.each_with_object({}) do |merchant, dictionary|
               dictionary[merchant.reference.value] = merchant.id.value

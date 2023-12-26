@@ -9,7 +9,7 @@ module Fintech
         include Deps[group_disbursable_orders_job: "orders.group_disbursable.job"]
 
         def perform
-          grouped_disbursable_merchant_ids = Application::FindDisbursableMerchantsUseCase.new.retrieve_grouped_ids
+          grouped_disbursable_merchant_ids = Domain::FindDisbursableMerchantsService.new.retrieve_grouped_ids
 
           grouped_disbursable_merchant_ids.each do |disbursement_frequency, merchant_ids|
             merchant_ids.each do |merchant_id|

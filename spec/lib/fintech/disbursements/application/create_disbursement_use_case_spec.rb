@@ -6,7 +6,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
   describe "#create(attributes)" do
     let(:repository) { Fintech::Disbursements::Infrastructure::InMemoryDisbursementRepository.new }
     let(:event_bus) { Fintech::Shared::Infrastructure::FakeInMemoryEventBus.new }
-    let(:finder_use_case) { Fintech::Merchants::Application::FakeFindMerchantUseCase.new }
+    let(:finder_service) { Fintech::Merchants::Domain::FakeFindMerchantService.new }
     let(:attributes) do
       {
         "id" => "93711b5b-0f08-49d9-b819-322d83801d09",
@@ -23,9 +23,9 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
     let(:callback) { -> { 1 + 1 } }
 
     it "raises an exception when merchant is not found" do
-      allow(finder_use_case).to receive(:find).and_raise(Fintech::Merchants::Domain::MerchantNotFoundError)
+      allow(finder_service).to receive(:find).and_raise(Fintech::Merchants::Domain::MerchantNotFoundError)
 
-      use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+      use_case = described_class.new(repository:, event_bus:, finder_service:)
 
       expect do
         use_case.create(attributes, callback:)
@@ -34,7 +34,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
 
     context "with valid attributes" do
       it "creates disbursement" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(repository).to receive(:create).with(
           {
@@ -54,7 +54,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "publishes event about disbursement created" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(event_bus).to receive(:publish).with(
           Fintech::Disbursements::Domain::DisbursementCreatedEventFactory.build(
@@ -76,7 +76,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         allow(repository).to receive(:first_in_month_for_merchant?)
           .with(merchant_id: attributes["merchant_id"], date: Date.parse(attributes["start_date"])) { true }
 
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(callback).to receive(:call)
 
@@ -87,7 +87,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
         allow(repository).to receive(:first_in_month_for_merchant?)
           .with(merchant_id: attributes["merchant_id"], date: Date.parse(attributes["start_date"])) { false }
 
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(callback).not_to receive(:call)
 
@@ -97,7 +97,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
 
     context "with invalid attributes" do
       it "does not create disbursement (invalid ID)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("id" => "uuid"), callback:)
@@ -105,7 +105,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid merchant ID)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("merchant_id" => "uuid"), callback:)
@@ -113,7 +113,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid amount)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("amount" => "free"), callback:)
@@ -121,7 +121,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid commissions amount)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("commissions_amount" => "free"), callback:)
@@ -129,7 +129,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid order IDs)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("order_ids" => [1, 2]), callback:)
@@ -137,7 +137,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid start date)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("start_date" => "yesterday"), callback:)
@@ -145,7 +145,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid end date)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("end_date" => "yesterday"), callback:)
@@ -153,7 +153,7 @@ RSpec.describe Fintech::Disbursements::Application::CreateDisbursementUseCase, t
       end
 
       it "does not create disbursement (invalid created at time)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("created_at" => "yesterday"), callback:)

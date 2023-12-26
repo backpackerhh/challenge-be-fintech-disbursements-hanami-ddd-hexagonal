@@ -11,11 +11,11 @@ module Fintech
         DEFAULT_INTERVAL = 5
 
         def perform(grouping_type, merchant_id)
-          grouped_orders = Application::GroupDisbursableOrdersUseCase.new.retrieve_grouped(grouping_type, merchant_id)
+          grouped_orders = Domain::GroupDisbursableOrdersService.new.retrieve_grouped(grouping_type, merchant_id)
 
           grouped_orders.each_with_index do |disbursement_attributes, idx|
-            attributes = JSON.parse(disbursement_attributes.merge(merchant_id:).to_json)
             interval = idx * DEFAULT_INTERVAL
+            attributes = JSON.parse(disbursement_attributes.merge(merchant_id:).to_json)
 
             create_disbursement_job.perform_in(interval, attributes)
           end

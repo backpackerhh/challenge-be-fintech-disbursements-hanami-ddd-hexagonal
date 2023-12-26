@@ -6,7 +6,7 @@ Hanami.app.register_provider :merchants, namespace: true do
   end
 
   start do
-    register "list.use_case", Fintech::Merchants::Application::ListMerchantsUseCase.new
-    register "find.use_case", Fintech::Merchants::Application::FindMerchantUseCase.new
+    register "list.service", Fintech::Merchants::Domain::ListMerchantsService.new
+    register "find.service", Fintech::Merchants::Domain::FindMerchantService.new
   end
 end

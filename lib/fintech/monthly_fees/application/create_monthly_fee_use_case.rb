@@ -7,13 +7,13 @@ module Fintech
         repository "monthly_fees.repository", Domain::MonthlyFeeRepository::Interface
         logger
         event_bus
-        finder_use_case "merchants.find.use_case"
+        finder_service "merchants.find.service"
 
         def create(attributes)
           attributes = attributes.transform_keys(&:to_sym)
           merchant_id = attributes.fetch(:merchant_id)
 
-          finder_use_case.find(merchant_id)
+          finder_service.find(merchant_id)
 
           monthly_fee = Domain::MonthlyFeeEntity.from_primitives(attributes)
 

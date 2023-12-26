@@ -7,13 +7,13 @@ module Fintech
         repository "order_commissions.repository", Domain::OrderCommissionRepository::Interface
         logger
         event_bus
-        finder_use_case "orders.find.use_case"
+        finder_service "orders.find.service"
 
         def create(attributes)
           attributes = attributes.transform_keys(&:to_sym)
           order_id = attributes.fetch(:order_id)
 
-          finder_use_case.find(order_id)
+          finder_service.find(order_id)
 
           if repository.exists?(order_id:)
             raise Domain::AlreadyExistingOrderCommissionError, "Order #{order_id} already has a commission associated"

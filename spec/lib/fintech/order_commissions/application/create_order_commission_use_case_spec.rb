@@ -6,7 +6,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
   describe "#create(attributes)" do
     let(:repository) { Fintech::OrderCommissions::Infrastructure::InMemoryOrderCommissionRepository.new }
     let(:event_bus) { Fintech::Shared::Infrastructure::FakeInMemoryEventBus.new }
-    let(:finder_use_case) { Fintech::Orders::Application::FakeFindOrderUseCase.new }
+    let(:finder_service) { Fintech::Orders::Domain::FakeFindOrderService.new }
     let(:attributes) do
       {
         "id" => "d1649242-a612-46ba-82d8-225542bb9576",
@@ -16,9 +16,9 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
     end
 
     it "raises an exception when order is not found" do
-      allow(finder_use_case).to receive(:find).and_raise(Fintech::Orders::Domain::OrderNotFoundError)
+      allow(finder_service).to receive(:find).and_raise(Fintech::Orders::Domain::OrderNotFoundError)
 
-      use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+      use_case = described_class.new(repository:, event_bus:, finder_service:)
 
       expect do
         use_case.create(attributes)
@@ -28,7 +28,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
     it "raises an exception when order already has a commission associated" do
       allow(repository).to receive(:exists?).with(order_id: "86312006-4d7e-45c4-9c28-788f4aa68a62") { true }
 
-      use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+      use_case = described_class.new(repository:, event_bus:, finder_service:)
 
       expect do
         use_case.create(attributes)
@@ -37,7 +37,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
 
     context "with valid attributes", freeze_time: Time.now do
       it "creates order commission with tier 1 fee" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(repository).to receive(:create).with(
           {
@@ -54,7 +54,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "creates order commission with tier 2 fee" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(repository).to receive(:create).with(
           {
@@ -71,7 +71,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "creates order commission with tier 3 fee" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(repository).to receive(:create).with(
           {
@@ -88,7 +88,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "publishes event about order commission created" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect(event_bus).to receive(:publish).with(
           Fintech::OrderCommissions::Domain::OrderCommissionCreatedEventFactory.build(
@@ -108,7 +108,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
 
     context "with invalid attributes" do
       it "does not create order commission (invalid ID)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("id" => "uuid"))
@@ -116,7 +116,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "does not create order commission (invalid order ID)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("order_id" => "uuid"))
@@ -124,7 +124,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "does not create order commission (invalid order amount)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("order_amount" => "free"))
@@ -132,7 +132,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "does not create order commission (invalid amount)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("amount" => "free"))
@@ -140,7 +140,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "does not create order commission (invalid fee)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("fee" => "free"))
@@ -148,7 +148,7 @@ RSpec.describe Fintech::OrderCommissions::Application::CreateOrderCommissionUseC
       end
 
       it "does not create order commission (invalid created at time)" do
-        use_case = described_class.new(repository:, event_bus:, finder_use_case:)
+        use_case = described_class.new(repository:, event_bus:, finder_service:)
 
         expect do
           use_case.create(attributes.merge("created_at" => "yesterday"))

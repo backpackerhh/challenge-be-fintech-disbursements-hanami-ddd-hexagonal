@@ -33,10 +33,10 @@ module Fintech
           include Deps[event_bus: dependency_key]
         end
 
-        def self.finder_use_case(dependency_key)
-          attribute :finder_use_case, Types::Instance(UseCase)
+        def self.finder_service(dependency_key)
+          attribute :finder_service, Types::Instance(Domain::Service)
 
-          include Deps[finder_use_case: dependency_key]
+          include Deps[finder_service: dependency_key]
         end
 
         def initialize(*)

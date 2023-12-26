@@ -7,13 +7,13 @@ module Fintech
         repository "disbursements.repository", Domain::DisbursementRepository::Interface
         logger
         event_bus
-        finder_use_case "merchants.find.use_case"
+        finder_service "merchants.find.service"
 
         def create(attributes, callback:)
           attributes = attributes.transform_keys(&:to_sym)
           merchant_id = attributes.fetch(:merchant_id)
 
-          finder_use_case.find(merchant_id)
+          finder_service.find(merchant_id)
 
           disbursement = Domain::DisbursementEntity.from_primitives(attributes)
 

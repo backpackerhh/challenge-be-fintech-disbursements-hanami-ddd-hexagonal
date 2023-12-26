@@ -6,14 +6,14 @@ module Fintech
       class CreateMonthlyFeeJob < Shared::Infrastructure::Job
         sidekiq_options queue: "monthly_fees", unique: true, retry_for: 3600 # 1 hour
 
-        include Deps[find_merchant_use_case: "merchants.find.use_case",
-                     find_monthly_order_commissions_use_case: "order_commissions.find_monthly.use_case"]
+        include Deps[find_merchant_service: "merchants.find.service",
+                     find_monthly_order_commissions_service: "order_commissions.find_monthly.service"]
 
         def perform(merchant_id, start_date)
-          merchant = find_merchant_use_case.find(merchant_id)
+          merchant = find_merchant_service.find(merchant_id)
           previous_month_date = Date.parse(start_date).prev_month
           formatted_previous_month = previous_month_date.strftime("%Y-%m")
-          commissions_amount = find_monthly_order_commissions_use_case.sum_monthly_amount(
+          commissions_amount = find_monthly_order_commissions_service.sum_monthly_amount(
             merchant_id:,
             date: previous_month_date
           )

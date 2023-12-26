@@ -6,6 +6,6 @@ Hanami.app.register_provider :order_commissions, namespace: true do
   end
 
   start do
-    register "find_monthly.use_case", Fintech::OrderCommissions::Application::FindMonthlyOrderCommissionsUseCase.new
+    register "find_monthly.service", Fintech::OrderCommissions::Domain::FindMonthlyOrderCommissionsService.new
   end
 end
