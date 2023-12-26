@@ -2,6 +2,10 @@ APP_ENV := development
 DB_NAME := challenge_be_fintech_disbursements_$(APP_ENV)
 DB_USER := postgres
 TEST_PATH := spec
+IMAGE_USERNAME := backpackerhh
+IMAGE_TAG := challenge-be-fintech-disbursements
+IMAGE_REPOSITORY := backpackerhh/challenge-be-fintech-ruby
+IMAGE_VERSION := 0.1.0
 
 db-connect:
 	@docker compose exec db psql -U $(DB_USER) -d $(DB_NAME)
@@ -79,3 +83,9 @@ logs:
 
 tasks:
 	@docker compose exec app rake -vT
+
+publish-image:
+	@docker login -u $(IMAGE_USERNAME)
+	@docker build -t $(IMAGE_TAG) -f Dockerfile.dev .
+	@docker tag $(IMAGE_TAG):latest $(IMAGE_REPOSITORY):$(IMAGE_VERSION)
+	@docker push $(IMAGE_REPOSITORY):$(IMAGE_VERSION)
