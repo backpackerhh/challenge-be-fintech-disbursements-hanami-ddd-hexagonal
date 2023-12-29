@@ -16,7 +16,7 @@ module Fintech
           SmarterCSV.process(file_path, options) do |chunk|
             chunk.each do |raw_order|
               raw_order.transform_keys!(&:to_s)
-              raw_order["original_id"] = raw_order["id"] # keep the original one for ilustrative purposes only
+              raw_order["original_id"] = raw_order["id"] # keep the original one for illustrative purposes only
               raw_order["id"] = SecureRandom.uuid
               raw_order["merchant_id"] = merchants_dictionary[raw_order["merchant_reference"]]
             end
