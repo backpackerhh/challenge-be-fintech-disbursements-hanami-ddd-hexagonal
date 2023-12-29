@@ -75,6 +75,12 @@ console:
 test:
 	@docker compose exec app rspec ${TEST_PATH}
 
+test-unit:
+	@docker compose exec app rspec --tag ~type:database
+
+test-database:
+	@docker compose exec app rspec --tag type:database
+
 lint:
 	@docker compose exec app rubocop
 
