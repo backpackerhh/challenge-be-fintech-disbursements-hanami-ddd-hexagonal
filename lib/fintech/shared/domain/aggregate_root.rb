@@ -11,7 +11,7 @@ module Fintech
         end
 
         def ==(other)
-          to_primitives == other.to_primitives
+          id == other.id
         end
       end
     end
